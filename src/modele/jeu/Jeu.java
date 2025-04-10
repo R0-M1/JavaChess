@@ -20,7 +20,10 @@ public class Jeu extends Thread {
         // TODO A implémenter
     }
 
-
+    public void envoyerCoup(Coup coup) {
+        System.out.println(coup.dep.x+" "+coup.dep.y+" -> "+coup.arr.x+" "+coup.arr.y);
+        // TODO A implémenter
+    }
 
 
     public Plateau getPlateau() {

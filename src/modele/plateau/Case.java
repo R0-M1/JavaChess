@@ -2,22 +2,18 @@ package modele.plateau;
 
 import modele.jeu.Piece;
 
+import java.awt.*;
+
 public class Case {
-    private int x;
-    private int y;
+    private Point position;
     private Piece piece;
 
     public Case(int x, int y) {
-        this.x = x;
-        this.y = y;
+        position = new Point(x, y);
     }
 
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
+    public Point getPosition() {
+        return position;
     }
 
     public Piece getPiece() {

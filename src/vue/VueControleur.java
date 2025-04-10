@@ -105,7 +105,7 @@ public class VueControleur extends JFrame implements Observer {
         JComponent grilleJLabels = new JPanel(new GridLayout(sizeY, sizeX)); // grilleJLabels va contenir les cases graphiques et les positionner sous la forme d'une grille
 
 
-        tabJLabel = new JLabel[sizeX][sizeY];
+        tabJLabel = new JLabel[sizeX][sizeY]; // tableau des icons des pieces sur l'échiquier
 
         for (int y = 0; y < sizeY; y++) {
             for (int x = 0; x < sizeX; x++) {
@@ -119,13 +119,14 @@ public class VueControleur extends JFrame implements Observer {
                 jlab.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
-
                         System.out.println(xx+" "+yy);
+
+
                         if (caseClic1 == null) {
                             caseClic1 = plateau.getCases()[xx][yy];
                         } else {
                             caseClic2 = plateau.getCases()[xx][yy];
-                            jeu.demandeDeplacementPiece(caseClic1, caseClic2);
+                            jeu.envoyerCoup(new Coup(caseClic1, caseClic2));
                             caseClic1 = null;
                             caseClic2 = null;
                         }
@@ -148,7 +149,7 @@ public class VueControleur extends JFrame implements Observer {
         add(grilleJLabels);
     }
 
-    
+
     /**
      * Il y a une grille du côté du modèle ( modele.jeu.getGrille() ) et une grille du côté de la vue (tabJLabel)
      */
