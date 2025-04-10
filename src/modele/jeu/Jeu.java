@@ -3,11 +3,17 @@ package modele.jeu;
 import modele.plateau.Plateau;
 import modele.plateau.Case;
 
-public class Jeu {
+public class Jeu extends Thread {
     private Plateau plateau;
+    private Joueur joueurB;
+    private Joueur joueurN;
+    public Coup coup;
+
 
     public Jeu() {
         this.plateau = new Plateau();
+        this.joueurB = new Joueur(this);
+        this.joueurN = new Joueur(this);
     }
 
     public Plateau getPlateau() {
