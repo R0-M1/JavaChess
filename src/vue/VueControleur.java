@@ -9,9 +9,7 @@ import java.util.Observer;
 import javax.swing.*;
 
 
-import modele.jeu.Jeu;
-import modele.jeu.Piece;
-import modele.jeu.Roi;
+import modele.jeu.*;
 import modele.plateau.Case;
 import modele.plateau.Plateau;
 
@@ -28,7 +26,22 @@ public class VueControleur extends JFrame implements Observer {
     private final int sizeY;
     private static final int pxCase = 50; // nombre de pixel par case
     // icones affichées dans la grille
-    private ImageIcon icoRoi;
+
+
+    private ImageIcon icoRoiB;
+    private ImageIcon icoRoiN;
+    private ImageIcon icoDameB;
+    private ImageIcon icoDameN;
+    private ImageIcon icoFouB;
+    private ImageIcon icoFouN;
+    private ImageIcon icoCavalierB;
+    private ImageIcon icoCavalierN;
+    private ImageIcon icoTourB;
+    private ImageIcon icoTourN;
+    private ImageIcon icoPionB;
+    private ImageIcon icoPionN;
+
+
 
     private Case caseClic1; // mémorisation des cases cliquées
     private Case caseClic2;
@@ -56,8 +69,18 @@ public class VueControleur extends JFrame implements Observer {
 
 
     private void chargerLesIcones() {
-        icoRoi = chargerIcone("Images/wK.png");
-
+        icoRoiB = chargerIcone("assets/images/roiBlanc.png");
+        icoRoiN = chargerIcone("assets/images/roiNoir.png");
+        icoDameB = chargerIcone("assets/images/dameBlanc.png");
+        icoDameN = chargerIcone("assets/images/dameNoir.png");
+        icoFouB = chargerIcone("assets/images/fouBlanc.png");
+        icoFouN = chargerIcone("assets/images/fouNoir.png");
+        icoCavalierB = chargerIcone("assets/images/cavalierBlanc.png");
+        icoCavalierN = chargerIcone("assets/images/cavalierNoir.png");
+        icoTourB = chargerIcone("assets/images/tourBlanc.png");
+        icoTourN = chargerIcone("assets/images/tourNoir.png");
+        icoPionB = chargerIcone("assets/images/pionBlanc.png");
+        icoPionN = chargerIcone("assets/images/pionNoir.png");
 
     }
 
@@ -97,6 +120,7 @@ public class VueControleur extends JFrame implements Observer {
                     @Override
                     public void mouseClicked(MouseEvent e) {
 
+                        System.out.println(xx+" "+yy);
                         if (caseClic1 == null) {
                             caseClic1 = plateau.getCases()[xx][yy];
                         } else {
@@ -129,30 +153,37 @@ public class VueControleur extends JFrame implements Observer {
      * Il y a une grille du côté du modèle ( modele.jeu.getGrille() ) et une grille du côté de la vue (tabJLabel)
      */
     private void mettreAJourAffichage() {
-
         for (int x = 0; x < sizeX; x++) {
             for (int y = 0; y < sizeY; y++) {
-
                 Case c = plateau.getCases()[x][y];
 
                 if (c != null) {
-
                     Piece e = c.getPiece();
 
                     if (e!= null) {
-                        if (c.getPiece() instanceof Roi) {
-
-                            tabJLabel[x][y].setIcon(icoRoi);
-
+                        if (e instanceof Roi) {
+                            if (e.estBlanc()) tabJLabel[x][y].setIcon(icoRoiB);
+                            else tabJLabel[x][y].setIcon(icoRoiN);
+                        } else if(e instanceof Dame) {
+                            if(e.estBlanc()) tabJLabel[x][y].setIcon(icoDameB);
+                            else tabJLabel[x][y].setIcon(icoDameN);
+                        } else if(e instanceof Tour) {
+                            if(e.estBlanc()) tabJLabel[x][y].setIcon(icoTourB);
+                            else tabJLabel[x][y].setIcon(icoTourN);
+                        } else if(e instanceof Fou) {
+                            if(e.estBlanc()) tabJLabel[x][y].setIcon(icoFouB);
+                            else tabJLabel[x][y].setIcon(icoFouN);
+                        } else if(e instanceof Cavalier) {
+                            if(e.estBlanc()) tabJLabel[x][y].setIcon(icoCavalierB);
+                            else tabJLabel[x][y].setIcon(icoCavalierN);
+                        } else if(e instanceof Pion) {
+                            if(e.estBlanc()) tabJLabel[x][y].setIcon(icoPionB);
+                            else tabJLabel[x][y].setIcon(icoPionN);
                         }
                     } else {
                         tabJLabel[x][y].setIcon(null);
-
                     }
-
-
                 }
-
             }
         }
     }

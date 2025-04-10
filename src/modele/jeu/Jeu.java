@@ -16,6 +16,13 @@ public class Jeu extends Thread {
         this.joueurN = new Joueur(this);
     }
 
+    public void jouerPartie() {
+        // TODO A implémenter
+    }
+
+
+
+
     public Plateau getPlateau() {
         return plateau;
     }
