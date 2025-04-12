@@ -6,7 +6,7 @@ public class Dame extends Piece {
         return false;
     }
 
-    public Dame(boolean estBlanc) {
-        super(estBlanc);
+    public Dame(Couleur couleur) {
+        super(couleur);
     }
 }

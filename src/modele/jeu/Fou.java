@@ -6,7 +6,7 @@ public class Fou extends Piece {
         return false;
     }
 
-    public Fou(boolean estBlanc) {
-        super(estBlanc);
+    public Fou(Couleur couleur) {
+        super(couleur);
     }
 }

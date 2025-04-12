@@ -6,7 +6,7 @@ public class Pion extends Piece {
         return coup.dep.x == coup.arr.x && (coup.arr.y == coup.dep.y - 1 || coup.arr.y == coup.dep.y - 2);
     }
 
-    public Pion(boolean estBlanc) {
-        super(estBlanc);
+    public Pion(Couleur couleur) {
+        super(couleur);
     }
 }

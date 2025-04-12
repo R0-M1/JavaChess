@@ -6,8 +6,8 @@ public class Tour extends Piece {
         return false;
     }
 
-    public Tour(boolean estBlanc) {
-        super(estBlanc);
+    public Tour(Couleur couleur) {
+        super(couleur);
     }
 
 

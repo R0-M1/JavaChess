@@ -9,13 +9,13 @@ public class Jeu extends Thread {
     private Joueur joueurN;
     public Coup coup;
 
-    private boolean tourBlanc;
+    private Couleur tourActuel;
 
     public Jeu() {
         this.plateau = new Plateau();
-        this.joueurB = new Joueur(this);
-        this.joueurN = new Joueur(this);
-        this.tourBlanc = true;
+        this.joueurB = new Joueur(this, Couleur.BLANC);
+        this.joueurN = new Joueur(this, Couleur.NOIR);
+        this.tourActuel = Couleur.BLANC; // Le tour commence avec les Blancs
     }
 
     @Override
@@ -36,7 +36,7 @@ public class Jeu extends Thread {
                 c = j.getCoup();
             }
             appliquerCoup(c);
-            tourBlanc = !tourBlanc;
+            changerTour();
         }
 
         // TODO: Logique de fin de partie
@@ -52,13 +52,17 @@ public class Jeu extends Thread {
         System.out.println("coup applique");
 
         // TODO: gérer la capture, la promotion, le roque, etc.
-        plateau.notifyObservers();
+        plateau.notifierChangement();
     }
 
     private boolean coupValide(Coup c) {
         Piece piece = plateau.getCases()[c.dep.x][c.dep.y].getPiece();
-        return piece != null && piece.coupValide(c);
-        // TODO: Ajouter des vérifications supplémentaires (pièce de l'adversaire, échecs, etc.)
+        if (piece == null) return false;
+
+        Joueur joueurActuel = getSuivant();
+        if (piece.getCouleur() != joueurActuel.getCouleur()) return false;
+
+        return piece.coupValide(c);
     }
 
     private boolean partieTermine() {
@@ -75,14 +79,25 @@ public class Jeu extends Thread {
         // TODO A implémenter
     }
 
+    // Méthode pour alterner les tours entre les joueurs
+    private void changerTour() {
+        // Alterne entre les couleurs de joueur
+        tourActuel = (tourActuel == Couleur.BLANC) ? Couleur.NOIR : Couleur.BLANC;
+    }
+
+    // Renvoie le joueur dont c'est le tour
     private Joueur getSuivant() {
-        return tourBlanc ? joueurB : joueurN;
-        // TODO A implémenter
+        if (tourActuel == Couleur.BLANC) {
+            return joueurB;
+        } else {
+            return joueurN;
+        }
     }
 
     public Plateau getPlateau() {
         return plateau;
     }
+
 
     // TODO A SUPPRIMER
     public void demandeDeplacementPiece(Case depart, Case arrivee) {

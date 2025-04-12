@@ -27,29 +27,34 @@ public class Plateau extends Observable {
     }
 
     private void placerPieces() {
-        tab[0][0].setPiece(new Tour(false));
-        tab[1][0].setPiece(new Cavalier(false));
-        tab[2][0].setPiece(new Fou(false));
-        tab[3][0].setPiece(new Dame(false));
-        tab[4][0].setPiece(new Roi(false));
-        tab[5][0].setPiece(new Fou(false));
-        tab[6][0].setPiece(new Cavalier(false));
-        tab[7][0].setPiece(new Tour(false));
+        tab[0][0].setPiece(new Tour(Couleur.NOIR));
+        tab[1][0].setPiece(new Cavalier(Couleur.NOIR));
+        tab[2][0].setPiece(new Fou(Couleur.NOIR));
+        tab[3][0].setPiece(new Dame(Couleur.NOIR));
+        tab[4][0].setPiece(new Roi(Couleur.NOIR));
+        tab[5][0].setPiece(new Fou(Couleur.NOIR));
+        tab[6][0].setPiece(new Cavalier(Couleur.NOIR));
+        tab[7][0].setPiece(new Tour(Couleur.NOIR));
         for (int i = 0; i < 8; i++) {
-            tab[i][1].setPiece(new Pion(false));
+            tab[i][1].setPiece(new Pion(Couleur.NOIR));
         }
 
-        tab[0][7].setPiece(new Tour(true));
-        tab[1][7].setPiece(new Cavalier(true));
-        tab[2][7].setPiece(new Fou(true));
-        tab[3][7].setPiece(new Dame(true));
-        tab[4][7].setPiece(new Roi(true));
-        tab[5][7].setPiece(new Fou(true));
-        tab[6][7].setPiece(new Cavalier(true));
-        tab[7][7].setPiece(new Tour(true));
+        tab[0][7].setPiece(new Tour(Couleur.BLANC));
+        tab[1][7].setPiece(new Cavalier(Couleur.BLANC));
+        tab[2][7].setPiece(new Fou(Couleur.BLANC));
+        tab[3][7].setPiece(new Dame(Couleur.BLANC));
+        tab[4][7].setPiece(new Roi(Couleur.BLANC));
+        tab[5][7].setPiece(new Fou(Couleur.BLANC));
+        tab[6][7].setPiece(new Cavalier(Couleur.BLANC));
+        tab[7][7].setPiece(new Tour(Couleur.BLANC));
         for (int i = 0; i < 8; i++) {
-            tab[i][6].setPiece(new Pion(true));
+            tab[i][6].setPiece(new Pion(Couleur.BLANC));
         }
+    }
+
+    public void notifierChangement() {
+        setChanged();
+        notifyObservers();
     }
 
     public Case[][] getCases() {

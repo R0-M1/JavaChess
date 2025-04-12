@@ -10,13 +10,13 @@ public abstract class Piece {
 
     public abstract boolean coupValide(Coup coup);
 
-    protected boolean estBlanc;
+    protected Couleur couleur;
 
-    public Piece(boolean estBlanc) {
-        this.estBlanc = estBlanc;
+    public Piece(Couleur couleur) {
+        this.couleur = couleur;
     }
 
-    public boolean estBlanc() {
-        return estBlanc;
+    public Couleur getCouleur() {
+        return couleur;
     }
 }

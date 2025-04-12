@@ -6,7 +6,7 @@ public class Cavalier extends Piece {
         return false;
     }
 
-    public Cavalier(boolean estBlanc) {
-        super(estBlanc);
+    public Cavalier(Couleur couleur) {
+        super(couleur);
     }
 }

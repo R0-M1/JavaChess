@@ -25,9 +25,8 @@ public class VueControleur extends JFrame implements Observer {
     private final int sizeX; // taille de la grille affichée
     private final int sizeY;
     private static final int pxCase = 80; // nombre de pixel par case
-    // icones affichées dans la grille
 
-
+    // icones des pieces
     private ImageIcon icoRoiB;
     private ImageIcon icoRoiN;
     private ImageIcon icoDameB;
@@ -41,14 +40,10 @@ public class VueControleur extends JFrame implements Observer {
     private ImageIcon icoPionB;
     private ImageIcon icoPionN;
 
-
-
     private Case caseClic1; // mémorisation des cases cliquées
     private Case caseClic2;
 
-
     private JLabel[][] tabJLabel; // cases graphique (au moment du rafraichissement, chaque case va être associée à une icône, suivant ce qui est présent dans le modèle)
-
 
     public VueControleur(Jeu _jeu) {
         jeu = _jeu;
@@ -64,7 +59,6 @@ public class VueControleur extends JFrame implements Observer {
         mettreAJourAffichage();
     }
 
-
     private void chargerLesIcones() {
         icoRoiB = chargerIcone("assets/images/roiBlanc.png");
         icoRoiN = chargerIcone("assets/images/roiNoir.png");
@@ -78,7 +72,6 @@ public class VueControleur extends JFrame implements Observer {
         icoTourN = chargerIcone("assets/images/tourNoir.png");
         icoPionB = chargerIcone("assets/images/pionBlanc.png");
         icoPionN = chargerIcone("assets/images/pionNoir.png");
-
     }
 
     private ImageIcon chargerIcone(String urlIcone) {
@@ -103,7 +96,6 @@ public class VueControleur extends JFrame implements Observer {
 
         JComponent grilleJLabels = new JPanel(new GridLayout(sizeY, sizeX)); // grilleJLabels va contenir les cases graphiques et les positionner sous la forme d'une grille
 
-
         tabJLabel = new JLabel[sizeX][sizeY]; // tableau des icons des pieces sur l'échiquier
 
         for (int y = 0; y < sizeY; y++) {
@@ -114,12 +106,12 @@ public class VueControleur extends JFrame implements Observer {
 
                 final int xx = x; // permet de compiler la classe anonyme ci-dessous
                 final int yy = y;
+
                 // écouteur de clics
                 jlab.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
                         System.out.println(xx+" "+yy);
-
 
                         if (caseClic1 == null) {
                             caseClic1 = plateau.getCases()[xx][yy];
@@ -162,22 +154,22 @@ public class VueControleur extends JFrame implements Observer {
 
                     if (e!= null) {
                         if (e instanceof Roi) {
-                            if (e.estBlanc()) tabJLabel[x][y].setIcon(icoRoiB);
+                            if (e.getCouleur()==Couleur.BLANC) tabJLabel[x][y].setIcon(icoRoiB);
                             else tabJLabel[x][y].setIcon(icoRoiN);
                         } else if(e instanceof Dame) {
-                            if(e.estBlanc()) tabJLabel[x][y].setIcon(icoDameB);
+                            if(e.getCouleur()==Couleur.BLANC) tabJLabel[x][y].setIcon(icoDameB);
                             else tabJLabel[x][y].setIcon(icoDameN);
                         } else if(e instanceof Tour) {
-                            if(e.estBlanc()) tabJLabel[x][y].setIcon(icoTourB);
+                            if(e.getCouleur()==Couleur.BLANC) tabJLabel[x][y].setIcon(icoTourB);
                             else tabJLabel[x][y].setIcon(icoTourN);
                         } else if(e instanceof Fou) {
-                            if(e.estBlanc()) tabJLabel[x][y].setIcon(icoFouB);
+                            if(e.getCouleur()==Couleur.BLANC) tabJLabel[x][y].setIcon(icoFouB);
                             else tabJLabel[x][y].setIcon(icoFouN);
                         } else if(e instanceof Cavalier) {
-                            if(e.estBlanc()) tabJLabel[x][y].setIcon(icoCavalierB);
+                            if(e.getCouleur()==Couleur.BLANC) tabJLabel[x][y].setIcon(icoCavalierB);
                             else tabJLabel[x][y].setIcon(icoCavalierN);
                         } else if(e instanceof Pion) {
-                            if(e.estBlanc()) tabJLabel[x][y].setIcon(icoPionB);
+                            if(e.getCouleur()==Couleur.BLANC) tabJLabel[x][y].setIcon(icoPionB);
                             else tabJLabel[x][y].setIcon(icoPionN);
                         }
                     } else {
@@ -190,21 +182,18 @@ public class VueControleur extends JFrame implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        mettreAJourAffichage();
-        /*
-
-        // récupérer le processus graphique pour rafraichir
-        // (normalement, à l'inverse, a l'appel du modèle depuis le contrôleur, utiliser un autre processus, voir classe Executor)
-
-
-        SwingUtilities.invokeLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        mettreAJourAffichage();
-                    }
-                }); 
-        */
-
+        if (SwingUtilities.isEventDispatchThread()) {
+            // Si on est déjà sur le thread graphique, on rafraîchit directement
+            mettreAJourAffichage();
+        } else {
+            // Sinon, on demande au thread graphique de faire le rafraîchissement
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    mettreAJourAffichage();
+                }
+            });
+        }
     }
 }
 

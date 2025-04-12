@@ -6,7 +6,7 @@ public class Roi extends Piece {
         return false;
     }
 
-    public Roi(boolean estBlanc) {
-        super(estBlanc);
+    public Roi(Couleur couleur) {
+        super(couleur);
     }
 }
