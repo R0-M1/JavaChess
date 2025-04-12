@@ -1,4 +1,4 @@
-package modele.jeu;
+package modele.jeu.mouvement;
 
 public abstract class DecCasesAccessibles {
 }

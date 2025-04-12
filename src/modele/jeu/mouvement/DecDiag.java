@@ -1,4 +1,4 @@
-package modele.jeu;
+package modele.jeu.mouvement;
 
 public class DecDiag extends DecCasesAccessibles {
 }

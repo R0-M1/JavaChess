@@ -1,4 +1,8 @@
-package modele.jeu;
+package modele.jeu.pieces;
+
+import modele.jeu.Couleur;
+import modele.jeu.Coup;
+import modele.jeu.Piece;
 
 public class Dame extends Piece {
     @Override

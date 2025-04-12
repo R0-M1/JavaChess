@@ -1,6 +1,7 @@
 package modele.plateau;
 
 import modele.jeu.*;
+import modele.jeu.pieces.*;
 
 import java.awt.*;
 import java.util.HashMap;

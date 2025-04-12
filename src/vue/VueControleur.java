@@ -10,6 +10,7 @@ import javax.swing.*;
 
 
 import modele.jeu.*;
+import modele.jeu.pieces.*;
 import modele.plateau.Case;
 import modele.plateau.Plateau;
 
