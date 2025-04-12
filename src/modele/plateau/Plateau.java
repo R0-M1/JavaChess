@@ -50,10 +50,7 @@ public class Plateau extends Observable {
         for (int i = 0; i < 8; i++) {
             tab[i][6].setPiece(new Pion(true));
         }
-
-
     }
-
 
     public Case[][] getCases() {
         return tab;

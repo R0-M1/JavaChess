@@ -24,7 +24,7 @@ public class VueControleur extends JFrame implements Observer {
     private Jeu jeu;
     private final int sizeX; // taille de la grille affichée
     private final int sizeY;
-    private static final int pxCase = 50; // nombre de pixel par case
+    private static final int pxCase = 80; // nombre de pixel par case
     // icones affichées dans la grille
 
 
@@ -56,15 +56,12 @@ public class VueControleur extends JFrame implements Observer {
         sizeX = Plateau.SIZE_X;
         sizeY = Plateau.SIZE_Y;
 
-
-
         chargerLesIcones();
         placerLesComposantsGraphiques();
 
         plateau.addObserver(this);
 
         mettreAJourAffichage();
-
     }
 
 
@@ -98,8 +95,10 @@ public class VueControleur extends JFrame implements Observer {
 
     private void placerLesComposantsGraphiques() {
         setTitle("Jeu d'Échecs");
+        setIconImage(new ImageIcon("assets/images/icone.png").getImage());
         setResizable(false);
         setSize(sizeX * pxCase, sizeX * pxCase);
+        setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // permet de terminer l'application à la fermeture de la fenêtre
 
         JComponent grilleJLabels = new JPanel(new GridLayout(sizeY, sizeX)); // grilleJLabels va contenir les cases graphiques et les positionner sous la forme d'une grille

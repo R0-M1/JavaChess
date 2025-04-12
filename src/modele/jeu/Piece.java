@@ -8,7 +8,7 @@ public abstract class Piece {
     private Case c;
     private DecCasesAccessibles dCA;
 
-
+    public abstract boolean coupValide(Coup coup);
 
     protected boolean estBlanc;
 
