@@ -3,6 +3,7 @@ package modele.jeu.pieces;
 import modele.jeu.Couleur;
 import modele.jeu.Coup;
 import modele.jeu.Piece;
+import modele.plateau.Plateau;
 
 public class Dame extends Piece {
     @Override
@@ -10,7 +11,7 @@ public class Dame extends Piece {
         return false;
     }
 
-    public Dame(Couleur couleur) {
-        super(couleur);
+    public Dame(Plateau plateau, Couleur couleur) {
+        super(plateau, couleur);
     }
 }

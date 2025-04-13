@@ -1,22 +1,31 @@
 package modele.jeu;
 
-import modele.jeu.mouvement.DecCasesAccessibles;
+import modele.jeu.decorators.DecoratorCasesAccessibles;
 import modele.plateau.Case;
 import modele.plateau.Plateau;
 
 public abstract class Piece {
-    private Plateau p;
-    private Case c;
+    protected Plateau p;
+    protected Case c;
     protected Couleur couleur;
-    private DecCasesAccessibles dCA;
+    public DecoratorCasesAccessibles dCA; // NOTE: Peut etre mettre en protected et faire un getter
 
-    public abstract boolean coupValide(Coup coup);
+    public abstract boolean coupValide(Coup coup); // TODO: A supprimer
 
-    public Piece(Couleur couleur) {
+    public Piece(Plateau plateau, Couleur couleur) {
         this.couleur = couleur;
+        this.p = plateau;
     }
 
     public Couleur getCouleur() {
         return couleur;
+    }
+
+    public void setCase(Case c) {
+        this.c = c;
+    }
+
+    public Case getCase() {
+        return c;
     }
 }

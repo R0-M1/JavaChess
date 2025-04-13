@@ -3,6 +3,7 @@ package modele.jeu.pieces;
 import modele.jeu.Couleur;
 import modele.jeu.Coup;
 import modele.jeu.Piece;
+import modele.plateau.Plateau;
 
 public class Cavalier extends Piece {
     @Override
@@ -10,7 +11,7 @@ public class Cavalier extends Piece {
         return false;
     }
 
-    public Cavalier(Couleur couleur) {
-        super(couleur);
+    public Cavalier(Plateau plateau, Couleur couleur) {
+        super(plateau, couleur);
     }
 }

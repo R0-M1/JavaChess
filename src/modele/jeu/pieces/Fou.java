@@ -3,6 +3,7 @@ package modele.jeu.pieces;
 import modele.jeu.Couleur;
 import modele.jeu.Coup;
 import modele.jeu.Piece;
+import modele.plateau.Plateau;
 
 public class Fou extends Piece {
     @Override
@@ -10,7 +11,7 @@ public class Fou extends Piece {
         return false;
     }
 
-    public Fou(Couleur couleur) {
-        super(couleur);
+    public Fou(Plateau plateau, Couleur couleur) {
+        super(plateau, couleur);
     }
 }

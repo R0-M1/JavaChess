@@ -29,7 +29,7 @@ public class Jeu extends Thread {
 
     public void jouerPartie() throws InterruptedException {
         while (!partieTermine()) {
-            Joueur j = getSuivant();
+            Joueur j = getJoueurCourant();
             Coup c = j.getCoup();
             while (!coupValide(c)) {
                 System.out.println("coup non valide");
@@ -47,6 +47,7 @@ public class Jeu extends Thread {
         Case arr = plateau.getCases()[c.arr.x][c.arr.y];
 
         arr.setPiece(dep.getPiece());
+        dep.getPiece().setCase(arr);
         dep.setPiece(null);
 
         System.out.println("coup applique");
@@ -59,10 +60,10 @@ public class Jeu extends Thread {
         Piece piece = plateau.getCases()[c.dep.x][c.dep.y].getPiece();
         if (piece == null) return false;
 
-        Joueur joueurActuel = getSuivant();
+        Joueur joueurActuel = getJoueurCourant();
         if (piece.getCouleur() != joueurActuel.getCouleur()) return false;
 
-        return piece.coupValide(c);
+        return piece.dCA.getCA().contains(plateau.getCases()[c.arr.x][c.arr.y]);
     }
 
     private boolean partieTermine() {
@@ -76,7 +77,7 @@ public class Jeu extends Thread {
             notify();
         }
 
-        // TODO A implémenter
+        // TODO A finir
     }
 
     // Méthode pour alterner les tours entre les joueurs
@@ -86,7 +87,7 @@ public class Jeu extends Thread {
     }
 
     // Renvoie le joueur dont c'est le tour
-    private Joueur getSuivant() {
+    private Joueur getJoueurCourant() {
         if (tourActuel == Couleur.BLANC) {
             return joueurB;
         } else {

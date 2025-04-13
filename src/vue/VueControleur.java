@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.*;
@@ -116,6 +117,14 @@ public class VueControleur extends JFrame implements Observer {
 
                         if (caseClic1 == null) {
                             caseClic1 = plateau.getCases()[xx][yy];
+                            Piece pieceClique = caseClic1.getPiece();
+                            if (pieceClique != null) {
+                                ArrayList<Case> test = pieceClique.dCA.getCA();
+                                System.out.println(test);
+                            } else {
+                                caseClic1 = null;
+                            }
+                            // TODO Faire en sorte que lorsque la case n'a pas de piece, on ne retient pas la case cliqué.
                         } else {
                             caseClic2 = plateau.getCases()[xx][yy];
                             jeu.envoyerCoup(new Coup(caseClic1, caseClic2));
