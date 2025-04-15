@@ -120,15 +120,25 @@ public class VueControleur extends JFrame implements Observer {
                         if (caseClic1 == null) {
                             caseClic1 = plateau.getCases()[xx][yy];
                             Piece pieceClique = caseClic1.getPiece();
-                            if (pieceClique != null) {
+                            if (pieceClique != null && pieceClique.getCouleur() == jeu.getTourActuel()) {
                                 casesAccessibles = pieceClique.dCA.getCA();
                                 mettreAJourAffichage();
                             } else {
                                 caseClic1 = null;
                             }
-                            // TODO Faire en sorte que lorsque la case n'a pas de piece, on ne retient pas la case cliqué.
                         } else {
                             caseClic2 = plateau.getCases()[xx][yy];
+
+                            // Si la case cliquée n'est pas accessible, on désélectionne
+                            if (casesAccessibles == null || !casesAccessibles.contains(caseClic2)) {
+                                caseClic1 = null;
+                                caseClic2 = null;
+                                casesAccessibles = null;
+                                mettreAJourAffichage();
+                                return;
+                            }
+
+                            // Sinon, c’est un coup valide : on envoie le coup
                             jeu.envoyerCoup(new Coup(caseClic1, caseClic2));
                             caseClic1 = null;
                             caseClic2 = null;
@@ -138,15 +148,7 @@ public class VueControleur extends JFrame implements Observer {
                     }
                 });
 
-
                 jlab.setOpaque(true);
-
-                if ((y%2 == 0 && x%2 == 0) || (y%2 != 0 && x%2 != 0)) {
-                    tabJLabel[x][y].setBackground(new Color(235, 236, 208));
-                } else {
-                    tabJLabel[x][y].setBackground(new Color(115, 149, 82));
-                }
-
                 grilleJLabels.add(jlab);
             }
         }
@@ -160,11 +162,15 @@ public class VueControleur extends JFrame implements Observer {
     private void mettreAJourAffichage() {
         for (int x = 0; x < sizeX; x++) {
             for (int y = 0; y < sizeY; y++) {
+                // Affichage des cases du plateau
+                if ((y%2 == 0 && x%2 == 0) || (y%2 != 0 && x%2 != 0)) {
+                    tabJLabel[x][y].setBackground(new Color(235, 236, 208));
+                } else {
+                    tabJLabel[x][y].setBackground(new Color(115, 149, 82));
+                }
+
+                // Affichage des pieces
                 Case c = plateau.getCases()[x][y];
-
-
-
-
                 if (c != null) {
                     Piece e = c.getPiece();
 
@@ -194,39 +200,44 @@ public class VueControleur extends JFrame implements Observer {
                 }
             }
         }
+
+        // Marquage des cases accessibles
         if (casesAccessibles != null) {
             for (Case c : casesAccessibles) {
                 int x = c.getPosition().x;
                 int y = c.getPosition().y;
 
+                boolean caseBlanche = (y % 2 == 0 && x % 2 == 0) || (y % 2 != 0 && x % 2 != 0);
                 if (tabJLabel[x][y].getIcon() != null) {
-                    tabJLabel[x][y].setBackground(new Color(Color.RED.getRGB())); // case occupée
-                    // TODO: faire une forme de cercle sur la case à la place de changer le background
+                    // Case occupée
+                    if (caseBlanche) {
+                        tabJLabel[x][y].setBackground(Color.decode("#e06d6d"));
+                    } else {
+                        tabJLabel[x][y].setBackground(Color.decode("#b94e4e"));
+                    }
                 } else {
-                    // Taille de l'icône = taille d'une case
                     BufferedImage img = new BufferedImage(pxCase, pxCase, BufferedImage.TYPE_INT_ARGB);
                     Graphics2D g2 = img.createGraphics();
                     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
                     // Couleur du point
-                    g2.setColor(Color.decode("#cacbb3"));
+                    if (caseBlanche) {
+                        g2.setColor(Color.decode("#cacbb3"));
+                    } else {
+                        g2.setColor(Color.decode("#638046"));
+                    }
+                    int pxPoint = pxCase / 3;
+                    int centerPoint = (pxCase - pxPoint) / 2;
 
-                    // Taille du point = 1/5 de la case
-                    int pointWidth = pxCase / 3;
-                    int pointHeight = pxCase / 3;
-
-                    // Coordonnées pour centrer le point
-                    int centerX = (pxCase - pointWidth) / 2;
-                    int centerY = (pxCase - pointHeight) / 2;
-
-                    // Dessin du cercle centré
-                    g2.fillOval(centerX, centerY, pointWidth, pointHeight);
+                    g2.fillOval(centerPoint, centerPoint, pxPoint, pxPoint);
                     g2.dispose();
 
                     tabJLabel[x][y].setIcon(new ImageIcon(img)); // Applique le point à la case
                 }
             }
         }
+        this.repaint(); // Pour dessiner tout d'une seule fois
+
     }
 
     @Override

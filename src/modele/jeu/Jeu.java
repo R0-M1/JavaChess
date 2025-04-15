@@ -47,11 +47,13 @@ public class Jeu extends Thread {
         Case dep = plateau.getCases()[c.dep.x][c.dep.y];
         Case arr = plateau.getCases()[c.arr.x][c.arr.y];
 
+        dep.getPiece().aDejaBouge = true;
+
         arr.setPiece(dep.getPiece());
         dep.getPiece().setCase(arr);
         dep.setPiece(null);
 
-        System.out.println("coup applique");
+        System.out.println(c.dep.x + " " + c.dep.y + " -> " + c.arr.x + " " + c.arr.y);
 
         // TODO: gérer la capture, la promotion, le roque, etc.
     }
@@ -99,15 +101,7 @@ public class Jeu extends Thread {
         return plateau;
     }
 
-
-    // TODO A SUPPRIMER
-    public void demandeDeplacementPiece(Case depart, Case arrivee) {
-        // Logique de déplacement de la pièce
-        Piece piece = depart.getPiece();
-        if (piece != null) {
-            arrivee.setPiece(piece);
-            depart.setPiece(null);
-            plateau.notifyObservers();
-        }
+    public Couleur getTourActuel() {
+        return tourActuel;
     }
 }

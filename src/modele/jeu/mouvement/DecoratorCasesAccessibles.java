@@ -1,4 +1,4 @@
-package modele.jeu.decorators;
+package modele.jeu.mouvement;
 
 import modele.plateau.Case;
 import modele.plateau.Plateau;

@@ -1,13 +1,13 @@
-package modele.jeu.decorators;
+package modele.jeu.mouvement;
 
-import modele.jeu.Piece;
 import modele.plateau.Case;
+import modele.jeu.Piece;
 import modele.plateau.Plateau;
 
 import java.util.ArrayList;
 
-public class DecoratorLigne extends DecoratorCasesAccessibles {
-    public DecoratorLigne(Piece piece, Plateau plateau, DecoratorCasesAccessibles base) {
+public class DecoratorDiag extends DecoratorCasesAccessibles {
+    public DecoratorDiag(Piece piece, Plateau plateau, DecoratorCasesAccessibles base) {
         super(piece, plateau, base);
     }
 
@@ -17,10 +17,10 @@ public class DecoratorLigne extends DecoratorCasesAccessibles {
         Case c = piece.getCase();
 
         int[][] directions = {
-                {1, 0},  // right
-                {-1, 0}, // left
-                {0, 1},  // down
-                {0, -1}  // up
+                {1, 1},  // down-right
+                {-1, -1}, // up-left
+                {-1, 1},  // down-left
+                {1, -1}  // up-right
         };
 
         for (int[] dir : directions) {
@@ -34,9 +34,9 @@ public class DecoratorLigne extends DecoratorCasesAccessibles {
                     if (next.getPiece() == null) {
                         cases.add(next);
                     } else {
-                         if (next.getPiece().getCouleur()!=piece.getCouleur()) {
-                             cases.add(next);
-                         }
+                        if (next.getPiece().getCouleur() != piece.getCouleur()) {
+                            cases.add(next);
+                        }
                         break; // stop if any piece is there
                     }
                 }
@@ -45,5 +45,4 @@ public class DecoratorLigne extends DecoratorCasesAccessibles {
 
         return cases;
     }
-    // TODO A Finir
 }

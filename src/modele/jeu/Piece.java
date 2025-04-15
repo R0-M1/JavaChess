@@ -1,6 +1,6 @@
 package modele.jeu;
 
-import modele.jeu.decorators.DecoratorCasesAccessibles;
+import modele.jeu.mouvement.DecoratorCasesAccessibles;
 import modele.plateau.Case;
 import modele.plateau.Plateau;
 
@@ -9,12 +9,14 @@ public abstract class Piece {
     protected Case c;
     protected Couleur couleur;
     public DecoratorCasesAccessibles dCA; // NOTE: Peut etre mettre en protected et faire un getter
+    public boolean aDejaBouge;
 
-    public abstract boolean coupValide(Coup coup); // TODO: A supprimer
+    //public abstract boolean coupValide(Coup coup); // TODO: A supprimer
 
     public Piece(Plateau plateau, Couleur couleur) {
         this.couleur = couleur;
         this.p = plateau;
+        aDejaBouge = false;
     }
 
     public Couleur getCouleur() {
