@@ -37,6 +37,7 @@ public class Jeu extends Thread {
             }
             appliquerCoup(c);
             changerTour();
+            plateau.notifierChangement();
         }
 
         // TODO: Logique de fin de partie
@@ -53,7 +54,6 @@ public class Jeu extends Thread {
         System.out.println("coup applique");
 
         // TODO: gérer la capture, la promotion, le roque, etc.
-        plateau.notifierChangement();
     }
 
     private boolean coupValide(Coup c) {

@@ -45,6 +45,8 @@ public class VueControleur extends JFrame implements Observer {
     private Case caseClic1; // mémorisation des cases cliquées
     private Case caseClic2;
 
+    private ArrayList<Case> casesAccessibles;
+
     private JLabel[][] tabJLabel; // cases graphique (au moment du rafraichissement, chaque case va être associée à une icône, suivant ce qui est présent dans le modèle)
 
     public VueControleur(Jeu _jeu) {
@@ -119,8 +121,8 @@ public class VueControleur extends JFrame implements Observer {
                             caseClic1 = plateau.getCases()[xx][yy];
                             Piece pieceClique = caseClic1.getPiece();
                             if (pieceClique != null) {
-                                ArrayList<Case> test = pieceClique.dCA.getCA();
-                                System.out.println(test);
+                                casesAccessibles = pieceClique.dCA.getCA();
+                                mettreAJourAffichage();
                             } else {
                                 caseClic1 = null;
                             }
@@ -130,6 +132,7 @@ public class VueControleur extends JFrame implements Observer {
                             jeu.envoyerCoup(new Coup(caseClic1, caseClic2));
                             caseClic1 = null;
                             caseClic2 = null;
+                            casesAccessibles = null;
                         }
 
                     }
@@ -159,6 +162,9 @@ public class VueControleur extends JFrame implements Observer {
             for (int y = 0; y < sizeY; y++) {
                 Case c = plateau.getCases()[x][y];
 
+
+
+
                 if (c != null) {
                     Piece e = c.getPiece();
 
@@ -185,6 +191,39 @@ public class VueControleur extends JFrame implements Observer {
                     } else {
                         tabJLabel[x][y].setIcon(null);
                     }
+                }
+            }
+        }
+        if (casesAccessibles != null) {
+            for (Case c : casesAccessibles) {
+                int x = c.getPosition().x;
+                int y = c.getPosition().y;
+
+                if (tabJLabel[x][y].getIcon() != null) {
+                    tabJLabel[x][y].setBackground(new Color(Color.RED.getRGB())); // case occupée
+                    // TODO: faire une forme de cercle sur la case à la place de changer le background
+                } else {
+                    // Taille de l'icône = taille d'une case
+                    BufferedImage img = new BufferedImage(pxCase, pxCase, BufferedImage.TYPE_INT_ARGB);
+                    Graphics2D g2 = img.createGraphics();
+                    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+                    // Couleur du point
+                    g2.setColor(Color.decode("#cacbb3"));
+
+                    // Taille du point = 1/5 de la case
+                    int pointWidth = pxCase / 3;
+                    int pointHeight = pxCase / 3;
+
+                    // Coordonnées pour centrer le point
+                    int centerX = (pxCase - pointWidth) / 2;
+                    int centerY = (pxCase - pointHeight) / 2;
+
+                    // Dessin du cercle centré
+                    g2.fillOval(centerX, centerY, pointWidth, pointHeight);
+                    g2.dispose();
+
+                    tabJLabel[x][y].setIcon(new ImageIcon(img)); // Applique le point à la case
                 }
             }
         }
