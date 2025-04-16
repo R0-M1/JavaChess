@@ -14,7 +14,4 @@ public class Coup {
         pos = caseArr.getPosition();
         arr = new Point(pos.x, pos.y);
     }
-
-    // TODO faire une méthode estCoupValide() pour vérifier si le coup est valide. Elle sera appelé dans envoyerCoup() de Jeu. [peut etre à mettre dans Piece]
-
 }

@@ -24,26 +24,25 @@ public class DecoratorLigne extends DecoratorCasesAccessibles {
         };
 
         for (int[] dir : directions) {
-            int dx = dir[0];
-            int dy = dir[1];
             Case next = c;
 
-            do {
-                next = plateau.getCaseRelative(next, dx, dy);
-                if (next != null) {
-                    if (next.getPiece() == null) {
+            while (true) {
+                next = plateau.getCaseRelative(next, dir[0], dir[1]);
+                if (next == null) break;
+
+                Piece pieceSurCase = next.getPiece();
+
+                if (pieceSurCase == null) {
+                    cases.add(next);
+                } else {
+                    if (pieceSurCase.getCouleur() != piece.getCouleur()) {
                         cases.add(next);
-                    } else {
-                        if (next.getPiece().getCouleur() != piece.getCouleur()) {
-                            cases.add(next);
-                        }
-                        break; // stop if any piece is there
                     }
+                    break; // Une pièce bloque le passage
                 }
-            } while (next != null && next.getPiece() == null);
+            }
         }
 
         return cases;
     }
-    // TODO A Finir
 }

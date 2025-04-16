@@ -121,7 +121,7 @@ public class VueControleur extends JFrame implements Observer {
                             caseClic1 = plateau.getCases()[xx][yy];
                             Piece pieceClique = caseClic1.getPiece();
                             if (pieceClique != null && pieceClique.getCouleur() == jeu.getTourActuel()) {
-                                casesAccessibles = pieceClique.dCA.getCA();
+                                casesAccessibles = pieceClique.getDCA().getCA();
                                 mettreAJourAffichage();
                             } else {
                                 caseClic1 = null;

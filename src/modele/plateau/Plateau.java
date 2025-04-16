@@ -100,7 +100,6 @@ public class Plateau extends Observable {
         return tab;
     }
 
-    // TODO: Faire méthode getCaseRelative(Case source, Direction d) : Case
     public Case getCaseRelative(Case source, int dx, int dy) {
         Point p = new Point(map.get(source)); // copie pour ne pas modifier l'original
         p.x += dx;

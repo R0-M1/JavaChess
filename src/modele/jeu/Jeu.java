@@ -40,7 +40,7 @@ public class Jeu extends Thread {
             plateau.notifierChangement();
         }
 
-        // TODO: Logique de fin de partie
+        // TODO: Logique de fin de partie (affichage du vainqueur ou nulle, temps de la partie, pieces mangés, etc...)
     }
 
     private void appliquerCoup(Coup c) {
@@ -65,12 +65,13 @@ public class Jeu extends Thread {
         Joueur joueurActuel = getJoueurCourant();
         if (piece.getCouleur() != joueurActuel.getCouleur()) return false;
 
-        return piece.dCA.getCA().contains(plateau.getCases()[c.arr.x][c.arr.y]);
+        return piece.getDCA().getCA().contains(plateau.getCases()[c.arr.x][c.arr.y]);
+        // TODO: Valider le coup si il fait partie des cases accessibles ET que le joueur n'est pas en position d'échec après le coup
     }
 
     private boolean partieTermine() {
         return false;
-        // TODO: Ajouter la logique de fin de partie
+        // TODO: Vérification d'échec et mat, nulle par pat, nulle par répétition, (et peut etre nulle par manque de matériel)
     }
 
     public void envoyerCoup(Coup c) {

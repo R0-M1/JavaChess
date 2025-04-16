@@ -8,7 +8,7 @@ public abstract class Piece {
     protected Plateau p;
     protected Case c;
     protected Couleur couleur;
-    public DecoratorCasesAccessibles dCA; // NOTE: Peut etre mettre en protected et faire un getter
+    protected DecoratorCasesAccessibles dCA;
     public boolean aDejaBouge;
 
     //public abstract boolean coupValide(Coup coup); // TODO: A supprimer
@@ -29,5 +29,9 @@ public abstract class Piece {
 
     public Case getCase() {
         return c;
+    }
+
+    public DecoratorCasesAccessibles getDCA() {
+        return dCA;
     }
 }
