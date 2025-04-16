@@ -4,9 +4,13 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 
 
@@ -121,7 +125,7 @@ public class VueControleur extends JFrame implements Observer {
                             caseClic1 = plateau.getCases()[xx][yy];
                             Piece pieceClique = caseClic1.getPiece();
                             if (pieceClique != null && pieceClique.getCouleur() == jeu.getTourActuel()) {
-                                casesAccessibles = pieceClique.getDCA().getCA();
+                                casesAccessibles = pieceClique.getDCA().getCasesValides();
                                 mettreAJourAffichage();
                             } else {
                                 caseClic1 = null;
@@ -242,6 +246,17 @@ public class VueControleur extends JFrame implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
+//        if(arg!=null&& arg.equals("test")) {
+//            try {
+//                AudioInputStream audioInput = AudioSystem.getAudioInputStream(new File("assets/sons/move.wav"));
+//                Clip clip = AudioSystem.getClip();
+//                clip.open(audioInput);
+//                clip.start();
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+
         if (SwingUtilities.isEventDispatchThread()) {
             // Si on est déjà sur le thread graphique, on rafraîchit directement
             mettreAJourAffichage();

@@ -1,5 +1,6 @@
 package modele.jeu;
 
+import modele.jeu.pieces.Roi;
 import modele.plateau.Plateau;
 import modele.plateau.Case;
 
@@ -12,7 +13,7 @@ public class Jeu extends Thread {
     private Couleur tourActuel;
 
     public Jeu() {
-        this.plateau = new Plateau();
+        this.plateau = new Plateau(this);
         this.joueurB = new Joueur(this, Couleur.BLANC);
         this.joueurN = new Joueur(this, Couleur.NOIR);
         this.tourActuel = Couleur.BLANC; // Le tour commence avec les Blancs
@@ -37,10 +38,10 @@ public class Jeu extends Thread {
             }
             appliquerCoup(c);
             changerTour();
-            plateau.notifierChangement();
+            plateau.notifierChangement(null);
         }
 
-        // TODO: Logique de fin de partie (affichage du vainqueur ou nulle, temps de la partie, pieces mangés, etc...)
+        // TODO: Logique de fin de partie (affichage du vainqueur ou nulle, temps de la partie, [pieces mangés]:pas sur, etc...)
     }
 
     private void appliquerCoup(Coup c) {
@@ -55,18 +56,55 @@ public class Jeu extends Thread {
 
         System.out.println(c.dep.x + " " + c.dep.y + " -> " + c.arr.x + " " + c.arr.y);
 
+        plateau.notifierChangement("test"); // NOTE: A supprimer peut etre
+
         // TODO: gérer la capture, la promotion, le roque, etc.
     }
 
     private boolean coupValide(Coup c) {
-        Piece piece = plateau.getCases()[c.dep.x][c.dep.y].getPiece();
+        Case dep = plateau.getCases()[c.dep.x][c.dep.y];
+        Case arr = plateau.getCases()[c.arr.x][c.arr.y];
+
+        Piece piece = dep.getPiece();
         if (piece == null) return false;
 
-        Joueur joueurActuel = getJoueurCourant();
-        if (piece.getCouleur() != joueurActuel.getCouleur()) return false;
+        // Vérifie que la pièce appartient au joueur courant
+        if (piece.getCouleur() != getJoueurCourant().getCouleur()) return false;
 
-        return piece.getDCA().getCA().contains(plateau.getCases()[c.arr.x][c.arr.y]);
-        // TODO: Valider le coup si il fait partie des cases accessibles ET que le joueur n'est pas en position d'échec après le coup
+        // Vérifie que la case d’arrivée est dans les cases accessibles
+        return piece.getDCA().getCasesValides().contains(arr);
+    }
+
+
+    public boolean estEnEchec(Couleur couleur) {
+        Case caseRoi = null;
+
+        // Trouver la case du roi de la couleur concernée
+        for (int x = 0; x < Plateau.SIZE_X; x++) {
+            for (int y = 0; y < Plateau.SIZE_Y; y++) {
+                Piece p = plateau.getCases()[x][y].getPiece();
+                if (p instanceof Roi && p.getCouleur() == couleur) {
+                    caseRoi = plateau.getCases()[x][y];
+                    break;
+                }
+            }
+        }
+
+        // Parcourir les pièces adverses
+        Couleur couleurAdverse = (couleur == Couleur.BLANC) ? Couleur.NOIR : Couleur.BLANC;
+
+        for (int x = 0; x < Plateau.SIZE_X; x++) {
+            for (int y = 0; y < Plateau.SIZE_Y; y++) {
+                Piece p = plateau.getCases()[x][y].getPiece();
+                if (p != null && p.getCouleur() == couleurAdverse) {
+                    if (p.getDCA().getCA().contains(caseRoi)) {
+                        return true; // Le roi est attaqué
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 
     private boolean partieTermine() {
@@ -79,8 +117,6 @@ public class Jeu extends Thread {
         synchronized (this) {
             notify();
         }
-
-        // TODO A finir
     }
 
     // Méthode pour alterner les tours entre les joueurs

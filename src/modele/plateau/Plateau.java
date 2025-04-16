@@ -5,6 +5,7 @@ import modele.jeu.pieces.*;
 
 import java.awt.*;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.Observable;
 
 public class Plateau extends Observable {
@@ -12,8 +13,10 @@ public class Plateau extends Observable {
     public static final int SIZE_Y = 8;
     private Case[][] tab;
     private HashMap<Case, Point> map;
+    private Jeu jeu;
 
-    public Plateau() {
+    public Plateau(Jeu jeu) {
+        this.jeu = jeu;
         initPlateauVide();
         placerPieces();
     }
@@ -91,9 +94,9 @@ public class Plateau extends Observable {
         }
     }
 
-    public void notifierChangement() {
+    public void notifierChangement(Object arg) { // NOTE: Peut etre enlever le parametre arg si non utilisé
         setChanged();
-        notifyObservers();
+        notifyObservers(arg);
     }
 
     public Case[][] getCases() {
@@ -110,5 +113,9 @@ public class Plateau extends Observable {
         }
 
         return tab[p.x][p.y];
+    }
+
+    public Jeu getJeu() {
+        return jeu;
     }
 }

@@ -20,13 +20,41 @@ public abstract class DecoratorCasesAccessibles {
     public abstract ArrayList<Case> getMesCA();
 
     public ArrayList<Case> getCA() {
-        ArrayList<Case> retour = getMesCA();
+        ArrayList<Case> casesPossibles = getMesCA();
 
-        if(base != null) {
-            retour.addAll(base.getCA());
+        if (base != null) {
+            casesPossibles.addAll(base.getCA());
         }
 
-        return retour;
+        return casesPossibles;
     }
 
+    public ArrayList<Case> getCasesValides() {
+        ArrayList<Case> casesValides = new ArrayList<>();
+
+        Case caseDepart = piece.getCase();
+
+        for (Case caseDestination : getCA()) {
+            Piece pieceCapturee = caseDestination.getPiece();
+
+            // Simule le déplacement
+            caseDepart.setPiece(null);
+            caseDestination.setPiece(piece);
+            piece.setCase(caseDestination);
+
+            boolean estEchec = plateau.getJeu().estEnEchec(piece.getCouleur());
+
+            // Annule le coup
+            caseDepart.setPiece(piece);
+            caseDestination.setPiece(pieceCapturee);
+            piece.setCase(caseDepart);
+
+            // Garde uniquement les coups qui ne mettent pas en échec
+            if (!estEchec) {
+                casesValides.add(caseDestination);
+            }
+        }
+
+        return casesValides;
+    }
 }
