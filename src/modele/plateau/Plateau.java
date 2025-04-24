@@ -14,6 +14,7 @@ public class Plateau extends Observable {
     private Case[][] tab;
     private HashMap<Case, Point> map;
     private Jeu jeu;
+    public HashMap<Integer, Integer> historiquePositions = new HashMap<>(); // Clé : hash, Valeur : compteur
 
     public Plateau(Jeu jeu) {
         this.jeu = jeu;
@@ -27,6 +28,7 @@ public class Plateau extends Observable {
         for (int x = 0; x < SIZE_X; x++) {
             for (int y = 0; y < SIZE_Y; y++) {
                 tab[x][y] = new Case(x, y);
+                tab[x][y].setPiece(null);
                 map.put(tab[x][y], tab[x][y].getPosition());
             }
         }
@@ -103,8 +105,21 @@ public class Plateau extends Observable {
         return tab;
     }
 
+    public int hashPlateau() {
+        int hash = 0;
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if(tab[i][j].getPiece()!=null) {
+                    hash += tab[i][j].getPiece().hashCode();
+                }
+            }
+        }
+        return hash;
+    }
+
     public Case getCaseRelative(Case source, int dx, int dy) {
-        Point p = new Point(map.get(source)); // copie pour ne pas modifier l'original
+        Point test = map.get(source);
+        Point p = new Point(test); // copie pour ne pas modifier l'original
         p.x += dx;
         p.y += dy;
 

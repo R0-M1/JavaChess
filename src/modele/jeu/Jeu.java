@@ -4,6 +4,8 @@ import modele.jeu.pieces.Roi;
 import modele.plateau.Plateau;
 import modele.plateau.Case;
 
+import java.util.Arrays;
+
 public class Jeu extends Thread {
     private Plateau plateau;
     private Joueur joueurB;
@@ -28,7 +30,7 @@ public class Jeu extends Thread {
         }
     }
 
-    public void jouerPartie() throws InterruptedException {
+    private void jouerPartie() throws InterruptedException {
         while (!partieTermine()) {
             Joueur j = getJoueurCourant();
             Coup c = j.getCoup();
@@ -38,7 +40,7 @@ public class Jeu extends Thread {
             }
             appliquerCoup(c);
             changerTour();
-            plateau.notifierChangement(null);
+            plateau.notifierChangement(null); // Notifier un GameEvent
         }
 
         // TODO: Logique de fin de partie (affichage du vainqueur ou nulle, temps de la partie, [pieces mangés]:pas sur, etc...)
@@ -108,6 +110,12 @@ public class Jeu extends Thread {
     }
 
     private boolean partieTermine() {
+        int cle = plateau.hashPlateau();
+        int count = plateau.historiquePositions.getOrDefault(cle, 0) + 1;
+        System.out.println("cle: " + cle + " count: " + count);
+        plateau.historiquePositions.put(cle, count);
+        if(count >= 3)
+            return true;
         return false;
         // TODO: Vérification d'échec et mat, nulle par pat, nulle par répétition, (et peut etre nulle par manque de matériel)
     }
