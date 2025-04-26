@@ -4,13 +4,14 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.*;
 
 import modele.jeu.*;
-import modele.jeu.pieces.*;
+import modele.pieces.*;
 import modele.plateau.Case;
 import modele.plateau.Plateau;
 
@@ -79,13 +80,15 @@ public class VueControleur extends JFrame implements Observer {
     }
 
     private ImageIcon chargerIcone(String urlIcone) {
-        ImageIcon icon = new ImageIcon(urlIcone);
+        URL resource = getClass().getClassLoader().getResource(urlIcone);
+        if (resource == null) {
+            System.err.println("Resource not found: " + urlIcone);
+            return null;
+        }
+        ImageIcon icon = new ImageIcon(resource);
 
-        // Redimensionner l'icône
         Image img = icon.getImage().getScaledInstance(pxCase, pxCase, Image.SCALE_SMOOTH);
-        ImageIcon resizedIcon = new ImageIcon(img);
-
-        return resizedIcon;
+        return new ImageIcon(img);
     }
 
     private void placerLesComposantsGraphiques() {
@@ -233,11 +236,8 @@ public class VueControleur extends JFrame implements Observer {
         panel.setBackground(Color.WHITE);
         panel.setBorder(BorderFactory.createEmptyBorder(10, 30, 20, 30));
 
-        ImageIcon icon = new ImageIcon(imagePath);
-        if (icon.getImageLoadStatus() == MediaTracker.COMPLETE) {
-            Image img = icon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
-            icon = new ImageIcon(img);
-
+        ImageIcon icon = chargerIcone(imagePath);
+        if (icon != null) {
             JLabel iconLabel = new JLabel(icon);
             iconLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
             panel.add(iconLabel);
@@ -246,7 +246,7 @@ public class VueControleur extends JFrame implements Observer {
 
         JLabel titreLabel = new JLabel(titre);
         titreLabel.setFont(new Font("SansSerif", Font.BOLD, 30));
-        titreLabel.setForeground(new Color(0, 0, 0));
+        titreLabel.setForeground(Color.BLACK);
         titreLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(titreLabel);
 
@@ -268,7 +268,6 @@ public class VueControleur extends JFrame implements Observer {
                 JOptionPane.PLAIN_MESSAGE
         );
     }
-
 
     @Override
     public void update(Observable o, Object arg) {

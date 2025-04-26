@@ -5,6 +5,8 @@
 Si vous utiliez une version récente de Java, vous aurez besoin d'ajouter cet argument à la compilation :
 -Dsun.java2d.uiScale=1.0
 
+Sinon utiliser java 8 et ça fonctionne bien
+
 Problème relatif au DPI de windows
 
 

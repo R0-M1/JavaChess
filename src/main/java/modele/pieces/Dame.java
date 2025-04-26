@@ -1,10 +1,8 @@
-package modele.jeu.pieces;
+package modele.pieces;
 
 import modele.jeu.Couleur;
-import modele.jeu.Coup;
-import modele.jeu.Piece;
-import modele.jeu.mouvement.DecoratorDiag;
-import modele.jeu.mouvement.DecoratorLigne;
+import modele.mouvement.DecoratorDiag;
+import modele.mouvement.DecoratorLigne;
 import modele.plateau.Plateau;
 
 public class Dame extends Piece {

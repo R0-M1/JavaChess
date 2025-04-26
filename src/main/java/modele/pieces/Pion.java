@@ -1,8 +1,7 @@
-package modele.jeu.pieces;
+package modele.pieces;
 
-import modele.jeu.Piece;
 import modele.jeu.Couleur;
-import modele.jeu.mouvement.DecoratorPion;
+import modele.mouvement.DecoratorPion;
 import modele.plateau.Plateau;
 
 public class Pion extends Piece {

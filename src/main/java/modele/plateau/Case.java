@@ -1,9 +1,8 @@
 package modele.plateau;
 
-import modele.jeu.Piece;
+import modele.pieces.Piece;
 
 import java.awt.*;
-import java.util.Objects;
 
 public class Case {
     private Point position;

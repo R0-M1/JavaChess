@@ -1,11 +1,10 @@
 package modele.plateau;
 
 import modele.jeu.*;
-import modele.jeu.pieces.*;
+import modele.pieces.*;
 
 import java.awt.*;
 import java.util.HashMap;
-import java.util.Objects;
 import java.util.Observable;
 
 public class Plateau extends Observable {

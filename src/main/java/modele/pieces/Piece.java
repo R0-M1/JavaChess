@@ -1,6 +1,7 @@
-package modele.jeu;
+package modele.pieces;
 
-import modele.jeu.mouvement.DecoratorCasesAccessibles;
+import modele.jeu.Couleur;
+import modele.mouvement.DecoratorCasesAccessibles;
 import modele.plateau.Case;
 import modele.plateau.Plateau;
 

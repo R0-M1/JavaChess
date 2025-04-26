@@ -1,13 +1,19 @@
 package vue;
 
 import javax.sound.sampled.*;
-import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 public class SoundPlayer {
     public static void play(String filename) {
         try {
-            AudioInputStream audioInput = AudioSystem.getAudioInputStream(new File(filename));
+            URL soundURL = SoundPlayer.class.getClassLoader().getResource(filename);
+            if (soundURL == null) {
+                System.err.println("Fichier audio non trouvé : " + filename);
+                return;
+            }
+
+            AudioInputStream audioInput = AudioSystem.getAudioInputStream(soundURL);
             Clip clip = AudioSystem.getClip();
             clip.open(audioInput);
             clip.start();
@@ -20,6 +26,5 @@ public class SoundPlayer {
         } catch (Exception e) {
             System.err.println("Une erreur inattendue est survenue : " + e.getMessage());
         }
-
     }
 }

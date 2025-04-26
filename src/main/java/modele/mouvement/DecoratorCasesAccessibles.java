@@ -1,8 +1,8 @@
-package modele.jeu.mouvement;
+package modele.mouvement;
 
 import modele.plateau.Case;
 import modele.plateau.Plateau;
-import modele.jeu.Piece;
+import modele.pieces.Piece;
 
 import java.util.ArrayList;
 

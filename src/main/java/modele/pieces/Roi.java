@@ -1,9 +1,7 @@
-package modele.jeu.pieces;
+package modele.pieces;
 
 import modele.jeu.Couleur;
-import modele.jeu.Coup;
-import modele.jeu.Piece;
-import modele.jeu.mouvement.DecoratorRoi;
+import modele.mouvement.DecoratorRoi;
 import modele.plateau.Plateau;
 
 public class Roi extends Piece {

@@ -1,13 +1,8 @@
-package modele.jeu.pieces;
+package modele.pieces;
 
 import modele.jeu.Couleur;
-import modele.jeu.Coup;
-import modele.jeu.Piece;
-import modele.jeu.mouvement.DecoratorLigne;
-import modele.plateau.Case;
+import modele.mouvement.DecoratorLigne;
 import modele.plateau.Plateau;
-
-import java.util.ArrayList;
 
 public class Tour extends Piece {
     public Tour(Plateau plateau, Couleur couleur) {

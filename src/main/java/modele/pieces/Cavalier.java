@@ -1,10 +1,7 @@
-package modele.jeu.pieces;
+package modele.pieces;
 
 import modele.jeu.Couleur;
-import modele.jeu.Coup;
-import modele.jeu.Piece;
-import modele.jeu.mouvement.DecoratorCavalier;
-import modele.jeu.mouvement.DecoratorPion;
+import modele.mouvement.DecoratorCavalier;
 import modele.plateau.Plateau;
 
 public class Cavalier extends Piece {

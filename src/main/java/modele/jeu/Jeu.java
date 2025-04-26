@@ -1,9 +1,9 @@
 package modele.jeu;
 
-import modele.jeu.pieces.Roi;
+import modele.pieces.Piece;
+import modele.pieces.Roi;
 import modele.plateau.Plateau;
 import modele.plateau.Case;
-
 
 public class Jeu extends Thread {
     private Plateau plateau;
@@ -137,7 +137,7 @@ public class Jeu extends Thread {
         }
         
         return false;
-        // TODO: Vérification d'échec et mat, nulle par pat, nulle par répétition, (et peut etre nulle par manque de matériel)
+        // TODO: Vérification nulle par pat, (et peut etre nulle par manque de matériel)
     }
 
     public boolean estEchecEtMat(Couleur couleur) {
