@@ -32,20 +32,18 @@ public class Jeu extends Thread {
 
     private void jouerPartie() throws InterruptedException {
         while (!partieTermine()) {
-            plateau.notifierChangement(currentEvent); // Notifier un GameEvent
             Joueur j = getJoueurCourant();
             Coup c = j.getCoup();
             while (!coupValide(c)) {
-                System.out.println("coup non valide");
                 currentEvent = GameEvent.INVALID_MOVE;
                 plateau.notifierChangement(currentEvent);
                 c = j.getCoup();
             }
             appliquerCoup(c);
+            plateau.notifierChangement(currentEvent);
             changerTour();
-
-            //NOTE: quand je fais plateau.notifierChangement(currentEvent); ICI ça fait le problème, car vu qu'il y a 2 threads, la vue est en train d'afficher les pieces pendant que le modèle est en train de calculer les coups possibles avec partieTermine()
         }
+        plateau.notifierChangement(currentEvent);
     }
 
     private void appliquerCoup(Coup c) {
@@ -67,8 +65,6 @@ public class Jeu extends Thread {
         dep.setPiece(null);
 
         System.out.println(c.dep.x + " " + c.dep.y + " -> " + c.arr.x + " " + c.arr.y);
-
-        //currentEvent = GameEvent.MOVE; // A changer de place, soit dans un decorator, soit dans Coup
 
         // TODO: gérer la capture, la promotion, le roque, etc.
     }
@@ -109,7 +105,6 @@ public class Jeu extends Thread {
                 Piece p = plateau.getCases()[x][y].getPiece();
                 if (p != null && p.getCouleur() == couleurAdverse) {
                     if (p.getDCA().getCA().contains(caseRoi)) {
-                        currentEvent = GameEvent.CHECK;
                         return true; // Le roi est attaqué
                     }
                 }
@@ -126,35 +121,41 @@ public class Jeu extends Thread {
         
         if(count >= 3) {
             currentEvent = GameEvent.DRAW;
-            plateau.notifierChangement(currentEvent); // TODO: Faire quelque chose de plus regroupé pour les notifierChangement()
             return true;
         }
+
         if(estEchecEtMat(tourActuel)) {
-            System.out.println("Échec et mat !");
             currentEvent = GameEvent.CHECKMATE;
-            plateau.notifierChangement(currentEvent);
+            return true;
+        }
+        if (estPat(tourActuel)) {
+            currentEvent = GameEvent.STALEMATE;
             return true;
         }
         
         return false;
-        // TODO: Vérification nulle par pat, (et peut etre nulle par manque de matériel)
     }
 
     public boolean estEchecEtMat(Couleur couleur) {
-        if (!estEnEchec(couleur)) return false;
+        return estEnEchec(couleur) && !aUnCoupLegal(couleur);
+    }
 
+    private boolean estPat(Couleur couleur) {
+        return !estEnEchec(couleur) && !aUnCoupLegal(couleur);
+    }
+
+    private boolean aUnCoupLegal(Couleur couleur) {
         for (int x = 0; x < Plateau.SIZE_X; x++) {
             for (int y = 0; y < Plateau.SIZE_Y; y++) {
                 Piece piece = plateau.getCases()[x][y].getPiece();
                 if (piece != null && piece.getCouleur() == couleur) {
                     if (!piece.getDCA().getCasesValides().isEmpty()) {
-                        return false; // Il reste au moins un coup légal
+                        return true;
                     }
                 }
             }
         }
-
-        return true; // Aucune pièce ne peut jouer => échec et mat
+        return false;
     }
 
     public void envoyerCoup(Coup c) {
