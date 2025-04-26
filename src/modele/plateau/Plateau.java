@@ -28,7 +28,6 @@ public class Plateau extends Observable {
         for (int x = 0; x < SIZE_X; x++) {
             for (int y = 0; y < SIZE_Y; y++) {
                 tab[x][y] = new Case(x, y);
-                tab[x][y].setPiece(null);
                 map.put(tab[x][y], tab[x][y].getPosition());
             }
         }
@@ -75,14 +74,18 @@ public class Plateau extends Observable {
         tab[2][7].setPiece(new Fou(this, Couleur.BLANC));
         tab[2][7].getPiece().setCase(tab[2][7]);
 
-        tab[3][7].setPiece(new Dame(this, Couleur.BLANC));
-        tab[3][7].getPiece().setCase(tab[3][7]);
+//        tab[3][7].setPiece(new Dame(this, Couleur.BLANC));
+//        tab[3][7].getPiece().setCase(tab[3][7]);
+        tab[7][3].setPiece(new Dame(this, Couleur.BLANC));
+        tab[7][3].getPiece().setCase(tab[7][3]);
 
         tab[4][7].setPiece(new Roi(this, Couleur.BLANC));
         tab[4][7].getPiece().setCase(tab[4][7]);
 
-        tab[5][7].setPiece(new Fou(this, Couleur.BLANC));
-        tab[5][7].getPiece().setCase(tab[5][7]);
+//        tab[5][7].setPiece(new Fou(this, Couleur.BLANC));
+//        tab[5][7].getPiece().setCase(tab[5][7]);
+        tab[2][4].setPiece(new Fou(this, Couleur.BLANC));
+        tab[2][4].getPiece().setCase(tab[2][4]);
 
         tab[6][7].setPiece(new Cavalier(this, Couleur.BLANC));
         tab[6][7].getPiece().setCase(tab[6][7]);
@@ -118,8 +121,7 @@ public class Plateau extends Observable {
     }
 
     public Case getCaseRelative(Case source, int dx, int dy) {
-        Point test = map.get(source);
-        Point p = new Point(test); // copie pour ne pas modifier l'original
+        Point p = new Point(map.get(source)); // copie pour ne pas modifier l'original
         p.x += dx;
         p.y += dy;
 

@@ -4,5 +4,9 @@ public enum GameEvent {
     MOVE,
     CAPTURE,
     CHECK,
-    CHECKMATE
+    CHECKMATE,
+    STALEMATE,
+    PROMOTION,
+    DRAW,
+    INVALID_MOVE
 }

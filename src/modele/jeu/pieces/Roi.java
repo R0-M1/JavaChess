@@ -11,4 +11,9 @@ public class Roi extends Piece {
         super(plateau, couleur);
         dCA = new DecoratorRoi(this, plateau, null);
     }
+
+    @Override
+    public String toString() {
+        return couleur==Couleur.BLANC ? "♔" : "♚";
+    }
 }

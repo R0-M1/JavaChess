@@ -28,6 +28,6 @@ public class Case {
     // TODO: temporaire
     @Override
     public String toString() {
-        return position.x + " " + position.y;
+        return piece!=null ? piece.toString() : "\u001B[48;5;250m" + "\u001B[0m";
     }
 }

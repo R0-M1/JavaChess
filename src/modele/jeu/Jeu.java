@@ -4,7 +4,6 @@ import modele.jeu.pieces.Roi;
 import modele.plateau.Plateau;
 import modele.plateau.Case;
 
-import java.util.Arrays;
 
 public class Jeu extends Thread {
     private Plateau plateau;
@@ -13,6 +12,7 @@ public class Jeu extends Thread {
     public Coup coup;
 
     private Couleur tourActuel;
+    private GameEvent currentEvent;
 
     public Jeu() {
         this.plateau = new Plateau(this);
@@ -32,25 +32,35 @@ public class Jeu extends Thread {
 
     private void jouerPartie() throws InterruptedException {
         while (!partieTermine()) {
+            plateau.notifierChangement(currentEvent); // Notifier un GameEvent
             Joueur j = getJoueurCourant();
             Coup c = j.getCoup();
             while (!coupValide(c)) {
                 System.out.println("coup non valide");
+                currentEvent = GameEvent.INVALID_MOVE;
+                plateau.notifierChangement(currentEvent);
                 c = j.getCoup();
             }
             appliquerCoup(c);
             changerTour();
-            plateau.notifierChangement(null); // Notifier un GameEvent
-        }
 
-        // TODO: Logique de fin de partie (affichage du vainqueur ou nulle, temps de la partie, [pieces mangés]:pas sur, etc...)
+            //NOTE: quand je fais plateau.notifierChangement(currentEvent); ICI ça fait le problème, car vu qu'il y a 2 threads, la vue est en train d'afficher les pieces pendant que le modèle est en train de calculer les coups possibles avec partieTermine()
+        }
     }
 
     private void appliquerCoup(Coup c) {
+        // NOTE: Faire la vérification du type de coup ici puis appliquer le coup en fonction, et changer currentEvent
+
         Case dep = plateau.getCases()[c.dep.x][c.dep.y];
         Case arr = plateau.getCases()[c.arr.x][c.arr.y];
 
         dep.getPiece().aDejaBouge = true;
+
+        if(arr.getPiece() != null) {
+            currentEvent = GameEvent.CAPTURE;
+        } else {
+            currentEvent = GameEvent.MOVE;
+        }
 
         arr.setPiece(dep.getPiece());
         dep.getPiece().setCase(arr);
@@ -58,7 +68,7 @@ public class Jeu extends Thread {
 
         System.out.println(c.dep.x + " " + c.dep.y + " -> " + c.arr.x + " " + c.arr.y);
 
-        plateau.notifierChangement("test"); // NOTE: A supprimer peut etre
+        //currentEvent = GameEvent.MOVE; // A changer de place, soit dans un decorator, soit dans Coup
 
         // TODO: gérer la capture, la promotion, le roque, etc.
     }
@@ -76,7 +86,6 @@ public class Jeu extends Thread {
         // Vérifie que la case d’arrivée est dans les cases accessibles
         return piece.getDCA().getCasesValides().contains(arr);
     }
-
 
     public boolean estEnEchec(Couleur couleur) {
         Case caseRoi = null;
@@ -100,6 +109,7 @@ public class Jeu extends Thread {
                 Piece p = plateau.getCases()[x][y].getPiece();
                 if (p != null && p.getCouleur() == couleurAdverse) {
                     if (p.getDCA().getCA().contains(caseRoi)) {
+                        currentEvent = GameEvent.CHECK;
                         return true; // Le roi est attaqué
                     }
                 }
@@ -112,12 +122,39 @@ public class Jeu extends Thread {
     private boolean partieTermine() {
         int cle = plateau.hashPlateau();
         int count = plateau.historiquePositions.getOrDefault(cle, 0) + 1;
-        System.out.println("cle: " + cle + " count: " + count);
         plateau.historiquePositions.put(cle, count);
-        if(count >= 3)
+        
+        if(count >= 3) {
+            currentEvent = GameEvent.DRAW;
+            plateau.notifierChangement(currentEvent); // TODO: Faire quelque chose de plus regroupé pour les notifierChangement()
             return true;
+        }
+        if(estEchecEtMat(tourActuel)) {
+            System.out.println("Échec et mat !");
+            currentEvent = GameEvent.CHECKMATE;
+            plateau.notifierChangement(currentEvent);
+            return true;
+        }
+        
         return false;
         // TODO: Vérification d'échec et mat, nulle par pat, nulle par répétition, (et peut etre nulle par manque de matériel)
+    }
+
+    public boolean estEchecEtMat(Couleur couleur) {
+        if (!estEnEchec(couleur)) return false;
+
+        for (int x = 0; x < Plateau.SIZE_X; x++) {
+            for (int y = 0; y < Plateau.SIZE_Y; y++) {
+                Piece piece = plateau.getCases()[x][y].getPiece();
+                if (piece != null && piece.getCouleur() == couleur) {
+                    if (!piece.getDCA().getCasesValides().isEmpty()) {
+                        return false; // Il reste au moins un coup légal
+                    }
+                }
+            }
+        }
+
+        return true; // Aucune pièce ne peut jouer => échec et mat
     }
 
     public void envoyerCoup(Coup c) {

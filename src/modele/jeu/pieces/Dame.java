@@ -12,4 +12,9 @@ public class Dame extends Piece {
         super(plateau, couleur);
         dCA = new DecoratorLigne(this, plateau, new DecoratorDiag(this, plateau, null));
     }
+
+    @Override
+    public String toString() {
+        return couleur==Couleur.BLANC ? "♕" : "♛";
+    }
 }

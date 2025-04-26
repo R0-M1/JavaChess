@@ -11,4 +11,9 @@ public class Fou extends Piece {
         super(plateau, couleur);
         dCA = new DecoratorDiag(this, plateau, null);
     }
+
+    @Override
+    public String toString() {
+        return couleur==Couleur.BLANC ? "♗" : "♝";
+    }
 }

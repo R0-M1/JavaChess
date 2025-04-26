@@ -4,15 +4,10 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 import javax.swing.*;
-
 
 import modele.jeu.*;
 import modele.jeu.pieces.*;
@@ -30,7 +25,7 @@ public class VueControleur extends JFrame implements Observer {
     private Jeu jeu;
     private final int sizeX; // taille de la grille affichée
     private final int sizeY;
-    private static final int pxCase = 80; // nombre de pixel par case
+    private static final int pxCase = 100; // nombre de pixel par case
 
     // icones des pieces
     private ImageIcon icoRoiB;
@@ -64,6 +59,7 @@ public class VueControleur extends JFrame implements Observer {
 
         plateau.addObserver(this);
 
+        SoundPlayer.play("assets/sons/game-start.wav");
         mettreAJourAffichage();
     }
 
@@ -83,8 +79,6 @@ public class VueControleur extends JFrame implements Observer {
     }
 
     private ImageIcon chargerIcone(String urlIcone) {
-        BufferedImage image = null;
-
         ImageIcon icon = new ImageIcon(urlIcone);
 
         // Redimensionner l'icône
@@ -133,16 +127,6 @@ public class VueControleur extends JFrame implements Observer {
                         } else {
                             caseClic2 = plateau.getCases()[xx][yy];
 
-                            // Si la case cliquée n'est pas accessible, on désélectionne
-                            if (casesAccessibles == null || !casesAccessibles.contains(caseClic2)) {
-                                caseClic1 = null;
-                                caseClic2 = null;
-                                casesAccessibles = null;
-                                mettreAJourAffichage();
-                                return;
-                            }
-
-                            // Sinon, c’est un coup valide : on envoie le coup
                             jeu.envoyerCoup(new Coup(caseClic1, caseClic2));
                             caseClic1 = null;
                             caseClic2 = null;
@@ -222,7 +206,6 @@ public class VueControleur extends JFrame implements Observer {
                 } else {
                     BufferedImage img = new BufferedImage(pxCase, pxCase, BufferedImage.TYPE_INT_ARGB);
                     Graphics2D g2 = img.createGraphics();
-                    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
                     // Couleur du point
                     if (caseBlanche) {
@@ -244,30 +227,101 @@ public class VueControleur extends JFrame implements Observer {
 
     }
 
+    private void afficherFinDePartie(String titre, String message, String imagePath) {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBackground(Color.WHITE);
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 30, 20, 30));
+
+        ImageIcon icon = new ImageIcon(imagePath);
+        if (icon.getImageLoadStatus() == MediaTracker.COMPLETE) {
+            Image img = icon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+            icon = new ImageIcon(img);
+
+            JLabel iconLabel = new JLabel(icon);
+            iconLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+            panel.add(iconLabel);
+            panel.add(Box.createRigidArea(new Dimension(0, 10)));
+        }
+
+        JLabel titreLabel = new JLabel(titre);
+        titreLabel.setFont(new Font("SansSerif", Font.BOLD, 30));
+        titreLabel.setForeground(new Color(0, 0, 0));
+        titreLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panel.add(titreLabel);
+
+        panel.add(Box.createRigidArea(new Dimension(0, 10)));
+
+        JLabel messageLabel = new JLabel(message);
+        messageLabel.setFont(new Font("SansSerif", Font.BOLD, 22));
+        messageLabel.setForeground(new Color(34, 139, 34));
+        messageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panel.add(messageLabel);
+
+        UIManager.put("OptionPane.background", Color.WHITE);
+        UIManager.put("Panel.background", Color.WHITE);
+
+        JOptionPane.showMessageDialog(
+                this,
+                panel,
+                titre,
+                JOptionPane.PLAIN_MESSAGE
+        );
+    }
+
+
     @Override
     public void update(Observable o, Object arg) {
-//        if(arg!=null&& arg.equals("test")) {
-//            try {
-//                AudioInputStream audioInput = AudioSystem.getAudioInputStream(new File("assets/sons/move.wav"));
-//                Clip clip = AudioSystem.getClip();
-//                clip.open(audioInput);
-//                clip.start();
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
-
         if (SwingUtilities.isEventDispatchThread()) {
             // Si on est déjà sur le thread graphique, on rafraîchit directement
             mettreAJourAffichage();
         } else {
             // Sinon, on demande au thread graphique de faire le rafraîchissement
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    mettreAJourAffichage();
-                }
-            });
+            SwingUtilities.invokeLater(this::mettreAJourAffichage);
+        }
+
+        if (arg instanceof GameEvent) {
+            switch ((GameEvent) arg) {
+                case MOVE:
+                    SoundPlayer.play("assets/sons/move.wav");
+                    break;
+                case CAPTURE:
+                    SoundPlayer.play("assets/sons/capture.wav");
+                    break;
+                case CHECK:
+                    SoundPlayer.play("assets/sons/move-check.wav");
+                    break;
+                case CHECKMATE:
+                    SoundPlayer.play("assets/sons/game-end.wav");
+                    Couleur gagnant = (jeu.getTourActuel() == Couleur.BLANC) ? Couleur.NOIR : Couleur.BLANC;
+                    String gagnantStr = (gagnant == Couleur.BLANC) ? "Blancs" : "Noirs";
+                    afficherFinDePartie(
+                            "Échec et mat",
+                            "Victoire des " + gagnantStr + " !",
+                            "assets/images/crown.png"
+                    );
+                    break;
+                case STALEMATE:
+                    SoundPlayer.play("assets/sons/game-end.wav");
+                    afficherFinDePartie(
+                            "Pat",
+                            "Match nul par pat.",
+                            "assets/images/draw.png"
+                    );
+                    break;
+                case DRAW:
+                    SoundPlayer.play("assets/sons/game-end.wav");
+                    afficherFinDePartie(
+                            "Match nul",
+                            "La partie se termine par une égalité.",
+                            "assets/images/draw.png"
+                    );
+                    break;
+                case INVALID_MOVE:
+                    SoundPlayer.play("assets/sons/illegal.wav");
+                    break;
+            }
+            // Met à jour la GUI aussi si nécessaire
         }
     }
 }

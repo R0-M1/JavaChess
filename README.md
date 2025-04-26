@@ -1,5 +1,13 @@
 # JavaChess
 
+### Attention
+
+Si vous utiliez une version récente de Java, vous aurez besoin d'ajouter cet argument à la compilation :
+-Dsun.java2d.uiScale=1.0
+
+Problème relatif au DPI de windows
+
+
 ### A faire
 
 Toutes les taches à faire sont dans les TODO.
@@ -32,7 +40,7 @@ AppliquerCoup à faire dans la classe Coup à la place de Jeu.
 
 Faire des sous classe de Coup pour les coups spéciaux [appliquer les coups] (roques, en passant) [et dans les decorators faire un truc pour l'affichage des cases accessibles]
 
-Pour la prise en passant, faire un attribut phéromonePiece qui correspond au pion venant se déplacer et donc de laisser sa "trace" sur la case.
+Pour la prise en passant, faire un attribut phéromonePiece dans Case qui correspond au pion venant se déplacer et donc de laisser sa "trace" sur la case.
 
 Pour la detection des echecs, copier le tableau de l'échiquier et faire la vérification. (car si le coup mange une piece, il y aura un problème au moment de rollback le coup)
 
