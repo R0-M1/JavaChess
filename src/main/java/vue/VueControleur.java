@@ -16,13 +16,13 @@ import modele.plateau.Case;
 import modele.plateau.Plateau;
 
 
-/** Cette classe a deux fonctions :
- *  (1) Vue : proposer une représentation graphique de l'application (cases graphiques, etc.)
- *  (2) Controleur : écouter les évènements clavier et déclencher le traitement adapté sur le modèle (clic position départ -> position arrivée pièce))
- *
+/**
+ * Cette classe a deux fonctions :
+ * (1) Vue : proposer une représentation graphique de l'application (cases graphiques, etc.)
+ * (2) Controleur : écouter les évènements clavier et déclencher le traitement adapté sur le modèle (clic position départ -> position arrivée pièce))
  */
 public class VueControleur extends JFrame implements Observer {
-    private Plateau plateau; // référence sur une classe de modèle : permet d'accéder aux données du modèle pour le rafraichissement, permet de communiquer les actions clavier (ou souris)
+    private Plateau plateau;
     private Jeu jeu;
     private final int sizeX; // taille de la grille affichée
     private final int sizeY;
@@ -116,7 +116,7 @@ public class VueControleur extends JFrame implements Observer {
                 jlab.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
-                        System.out.println(xx+" "+yy);
+                        System.out.println(xx + " " + yy);
 
                         if (caseClic1 == null) {
                             caseClic1 = plateau.getCases()[xx][yy];
@@ -154,7 +154,7 @@ public class VueControleur extends JFrame implements Observer {
         for (int x = 0; x < sizeX; x++) {
             for (int y = 0; y < sizeY; y++) {
                 // Affichage des cases du plateau
-                if ((y%2 == 0 && x%2 == 0) || (y%2 != 0 && x%2 != 0)) {
+                if ((y % 2 == 0 && x % 2 == 0) || (y % 2 != 0 && x % 2 != 0)) {
                     tabJLabel[x][y].setBackground(new Color(235, 236, 208));
                 } else {
                     tabJLabel[x][y].setBackground(new Color(115, 149, 82));
@@ -165,24 +165,24 @@ public class VueControleur extends JFrame implements Observer {
                 if (c != null) {
                     Piece e = c.getPiece();
 
-                    if (e!= null) {
+                    if (e != null) {
                         if (e instanceof Roi) {
-                            if (e.getCouleur()==Couleur.BLANC) tabJLabel[x][y].setIcon(icoRoiB);
+                            if (e.getCouleur() == Couleur.BLANC) tabJLabel[x][y].setIcon(icoRoiB);
                             else tabJLabel[x][y].setIcon(icoRoiN);
-                        } else if(e instanceof Dame) {
-                            if(e.getCouleur()==Couleur.BLANC) tabJLabel[x][y].setIcon(icoDameB);
+                        } else if (e instanceof Dame) {
+                            if (e.getCouleur() == Couleur.BLANC) tabJLabel[x][y].setIcon(icoDameB);
                             else tabJLabel[x][y].setIcon(icoDameN);
-                        } else if(e instanceof Tour) {
-                            if(e.getCouleur()==Couleur.BLANC) tabJLabel[x][y].setIcon(icoTourB);
+                        } else if (e instanceof Tour) {
+                            if (e.getCouleur() == Couleur.BLANC) tabJLabel[x][y].setIcon(icoTourB);
                             else tabJLabel[x][y].setIcon(icoTourN);
-                        } else if(e instanceof Fou) {
-                            if(e.getCouleur()==Couleur.BLANC) tabJLabel[x][y].setIcon(icoFouB);
+                        } else if (e instanceof Fou) {
+                            if (e.getCouleur() == Couleur.BLANC) tabJLabel[x][y].setIcon(icoFouB);
                             else tabJLabel[x][y].setIcon(icoFouN);
-                        } else if(e instanceof Cavalier) {
-                            if(e.getCouleur()==Couleur.BLANC) tabJLabel[x][y].setIcon(icoCavalierB);
+                        } else if (e instanceof Cavalier) {
+                            if (e.getCouleur() == Couleur.BLANC) tabJLabel[x][y].setIcon(icoCavalierB);
                             else tabJLabel[x][y].setIcon(icoCavalierN);
-                        } else if(e instanceof Pion) {
-                            if(e.getCouleur()==Couleur.BLANC) tabJLabel[x][y].setIcon(icoPionB);
+                        } else if (e instanceof Pion) {
+                            if (e.getCouleur() == Couleur.BLANC) tabJLabel[x][y].setIcon(icoPionB);
                             else tabJLabel[x][y].setIcon(icoPionN);
                         }
                     } else {
@@ -269,6 +269,49 @@ public class VueControleur extends JFrame implements Observer {
         );
     }
 
+    private void demanderPromotion() {
+        JLabel messageLabel = new JLabel("Choisissez une promotion");
+        messageLabel.setFont(new Font("SansSerif", Font.BOLD, 30));
+        messageLabel.setHorizontalAlignment(SwingConstants.CENTER); // Center the text
+
+        Object[] options = {icoDameB, icoTourB, icoFouB, icoCavalierB}; // Images as options
+
+        // Show the promotion dialog
+        int choix = JOptionPane.showOptionDialog(
+                null,
+                messageLabel,
+                "Promotion",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                options, // Display the images
+                options[0]  // Default selection is the first image ("Dame")
+        );
+
+        Piece nouvellePiece = null;
+        switch (choix) {
+            case 0:
+                nouvellePiece = new Dame(plateau, jeu.getTourActuel());  // Create a Queen (Dame)
+                break;
+            case 1:
+                nouvellePiece = new Tour(plateau, jeu.getTourActuel());  // Create a Rook (Tour)
+                break;
+            case 2:
+                nouvellePiece = new Cavalier(plateau, jeu.getTourActuel());  // Create a Knight (Cavalier)
+                break;
+            case 3:
+                nouvellePiece = new Fou(plateau, jeu.getTourActuel());  // Create a Bishop (Fou)
+                break;
+        }
+
+        if (nouvellePiece != null) {
+            plateau.promouvoirPion(plateau.getCases()[jeu.dernierCoup.arr.x][jeu.dernierCoup.arr.y], nouvellePiece);  // TODO: Utiliser dernierCoup (oui le meme que celui qui va etre utilisé pour en passant) pour savoir la case de destination du pion voulant faire la promotion
+        }
+
+        mettreAJourAffichage();
+    }
+
+
     @Override
     public void update(Observable o, Object arg) {
         if (SwingUtilities.isEventDispatchThread()) {
@@ -318,6 +361,13 @@ public class VueControleur extends JFrame implements Observer {
                     break;
                 case INVALID_MOVE:
                     SoundPlayer.play("assets/sons/illegal.wav");
+                    break;
+                case PROMOTION:
+                    demanderPromotion();
+                    SoundPlayer.play("assets/sons/promote.wav");
+                    break;
+                case CASTLE:
+                    SoundPlayer.play("assets/sons/castle.wav");
                     break;
             }
             // Met à jour la GUI aussi si nécessaire

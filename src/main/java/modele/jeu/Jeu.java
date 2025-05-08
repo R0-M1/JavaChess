@@ -1,6 +1,7 @@
 package modele.jeu;
 
 import modele.pieces.Piece;
+import modele.pieces.Pion;
 import modele.pieces.Roi;
 import modele.plateau.Plateau;
 import modele.plateau.Case;
@@ -10,6 +11,7 @@ public class Jeu extends Thread {
     private Joueur joueurB;
     private Joueur joueurN;
     public Coup coup;
+    public Coup dernierCoup;
 
     private Couleur tourActuel;
     private GameEvent currentEvent;
@@ -47,26 +49,65 @@ public class Jeu extends Thread {
     }
 
     private void appliquerCoup(Coup c) {
-        // NOTE: Faire la vérification du type de coup ici puis appliquer le coup en fonction, et changer currentEvent
-
         Case dep = plateau.getCases()[c.dep.x][c.dep.y];
         Case arr = plateau.getCases()[c.arr.x][c.arr.y];
+        Piece piece = dep.getPiece();
 
-        dep.getPiece().aDejaBouge = true;
+        piece.aDejaBouge = true;
 
-        if(arr.getPiece() != null) {
+        if (arr.getPiece() != null) {
             currentEvent = GameEvent.CAPTURE;
         } else {
             currentEvent = GameEvent.MOVE;
         }
 
-        arr.setPiece(dep.getPiece());
-        dep.getPiece().setCase(arr);
+        // Vérifie si c'est une prise en passant
+        if (piece instanceof Pion && arr.getPiece() == null && c.dep.x != c.arr.x) {
+            int dir = (piece.getCouleur() == Couleur.BLANC) ? -1 : 1;
+            Case caseCapture = plateau.getCases()[c.arr.x][c.arr.y - dir]; // pion capturé en arrière
+            caseCapture.setPiece(null);
+            currentEvent = GameEvent.CAPTURE;
+        }
+
+        // Déplacement simple
+        arr.setPiece(piece);
+        piece.setCase(arr);
         dep.setPiece(null);
 
-        System.out.println(c.dep.x + " " + c.dep.y + " -> " + c.arr.x + " " + c.arr.y);
+        // Roque
+        if (piece instanceof Roi && Math.abs(c.arr.x - c.dep.x) == 2) {
+            int y = c.dep.y;
+            if (c.arr.x == 6) { // petit roque
+                Case tourDep = plateau.getCases()[7][y];
+                Case tourArr = plateau.getCases()[5][y];
+                Piece tour = tourDep.getPiece();
+                tourDep.setPiece(null);
+                tourArr.setPiece(tour);
+                tour.setCase(tourArr);
+                currentEvent = GameEvent.CASTLE;
+            } else if (c.arr.x == 2) { // grand roque
+                Case tourDep = plateau.getCases()[0][y];
+                Case tourArr = plateau.getCases()[3][y];
+                Piece tour = tourDep.getPiece();
+                tourDep.setPiece(null);
+                tourArr.setPiece(tour);
+                tour.setCase(tourArr);
+                currentEvent = GameEvent.CASTLE;
+            }
+        }
 
-        // TODO: gérer la capture, la promotion, le roque, etc.
+        // Détection promotion
+        if (arr.getPiece() instanceof Pion) {
+            Pion pion = (Pion) arr.getPiece();
+            if ((pion.getCouleur() == Couleur.NOIR && arr.getPosition().y == Plateau.SIZE_Y-1) ||
+                    (pion.getCouleur() == Couleur.BLANC && arr.getPosition().y == 0)) {
+                currentEvent = GameEvent.PROMOTION;
+            }
+        }
+
+        dernierCoup = c;
+
+        System.out.println(c.dep.x + " " + c.dep.y + " -> " + c.arr.x + " " + c.arr.y);
     }
 
     private boolean coupValide(Coup c) {
@@ -118,13 +159,13 @@ public class Jeu extends Thread {
         int cle = plateau.hashPlateau();
         int count = plateau.historiquePositions.getOrDefault(cle, 0) + 1;
         plateau.historiquePositions.put(cle, count);
-        
-        if(count >= 3) {
+
+        if (count >= 3) {
             currentEvent = GameEvent.DRAW;
             return true;
         }
 
-        if(estEchecEtMat(tourActuel)) {
+        if (estEchecEtMat(tourActuel)) {
             currentEvent = GameEvent.CHECKMATE;
             return true;
         }
@@ -132,7 +173,7 @@ public class Jeu extends Thread {
             currentEvent = GameEvent.STALEMATE;
             return true;
         }
-        
+
         return false;
     }
 

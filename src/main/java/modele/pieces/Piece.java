@@ -38,6 +38,6 @@ public abstract class Piece {
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.getClass(), c.getPosition(), couleur);
+        return Objects.hash(this.getClass(), c.getPosition(), couleur, aDejaBouge);
     }
 }

@@ -73,18 +73,14 @@ public class Plateau extends Observable {
         tab[2][7].setPiece(new Fou(this, Couleur.BLANC));
         tab[2][7].getPiece().setCase(tab[2][7]);
 
-//        tab[3][7].setPiece(new Dame(this, Couleur.BLANC));
-//        tab[3][7].getPiece().setCase(tab[3][7]);
-        tab[7][3].setPiece(new Dame(this, Couleur.BLANC));
-        tab[7][3].getPiece().setCase(tab[7][3]);
+        tab[3][7].setPiece(new Dame(this, Couleur.BLANC));
+        tab[3][7].getPiece().setCase(tab[3][7]);
 
         tab[4][7].setPiece(new Roi(this, Couleur.BLANC));
         tab[4][7].getPiece().setCase(tab[4][7]);
 
-//        tab[5][7].setPiece(new Fou(this, Couleur.BLANC));
-//        tab[5][7].getPiece().setCase(tab[5][7]);
-        tab[2][4].setPiece(new Fou(this, Couleur.BLANC));
-        tab[2][4].getPiece().setCase(tab[2][4]);
+        tab[5][7].setPiece(new Fou(this, Couleur.BLANC));
+        tab[5][7].getPiece().setCase(tab[5][7]);
 
         tab[6][7].setPiece(new Cavalier(this, Couleur.BLANC));
         tab[6][7].getPiece().setCase(tab[6][7]);
@@ -98,7 +94,7 @@ public class Plateau extends Observable {
         }
     }
 
-    public void notifierChangement(Object arg) { // NOTE: Peut etre enlever le parametre arg si non utilisé
+    public void notifierChangement(Object arg) {
         setChanged();
         notifyObservers(arg);
     }
@@ -109,10 +105,10 @@ public class Plateau extends Observable {
 
     public int hashPlateau() {
         int hash = 0;
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                if(tab[i][j].getPiece()!=null) {
-                    hash += tab[i][j].getPiece().hashCode();
+        for (int x = 0; x < SIZE_X; x++) {
+            for (int y = 0; y < SIZE_Y; y++) {
+                if(tab[x][y].getPiece()!=null) {
+                    hash += tab[x][y].getPiece().hashCode();
                 }
             }
         }
@@ -129,6 +125,14 @@ public class Plateau extends Observable {
         }
 
         return tab[p.x][p.y];
+    }
+
+    public void promouvoirPion(Case casePion, Piece nouvellePiece) {
+        // Vérifie si la case contient un pion
+        if (casePion != null && casePion.getPiece() instanceof Pion) {
+            nouvellePiece.setCase(casePion);
+            casePion.setPiece(nouvellePiece);
+        }
     }
 
     public Jeu getJeu() {

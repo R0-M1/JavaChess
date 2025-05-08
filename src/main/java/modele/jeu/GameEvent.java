@@ -8,5 +8,6 @@ public enum GameEvent {
     STALEMATE,
     PROMOTION,
     DRAW,
-    INVALID_MOVE
+    INVALID_MOVE,
+    CASTLE
 }

@@ -12,6 +12,10 @@ Problème relatif au DPI de windows
 
 ### A faire
 
+
+Enlever l'attribut lastPiece dans Case et plutot utiliser un attribut dernierCoup dans Jeu ou Plateau et en fonction du dernier coup, on fait le en passant ou non
+
+
 Toutes les taches à faire sont dans les TODO.
 
 * Detection d'échec / échec et mat
