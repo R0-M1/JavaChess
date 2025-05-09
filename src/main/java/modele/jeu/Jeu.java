@@ -23,16 +23,8 @@ public class Jeu extends Thread {
         this.tourActuel = Couleur.BLANC; // Le tour commence avec les Blancs
 
         if (modeIA) {
-            Random rand = new Random();
-            boolean iaEstBlanc = rand.nextBoolean();
-            iaEstBlanc = false;
-            if (iaEstBlanc) {
-                this.joueurB = new JoueurIA(this, Couleur.BLANC);
-                this.joueurN = new Joueur(this, Couleur.NOIR);
-            } else {
-                this.joueurB = new Joueur(this, Couleur.BLANC);
-                this.joueurN = new JoueurIA(this, Couleur.NOIR);
-            }
+            this.joueurB = new Joueur(this, Couleur.BLANC);
+            this.joueurN = new JoueurIA(this, Couleur.NOIR);
         } else {
             this.joueurB = new Joueur(this, Couleur.BLANC);
             this.joueurN = new Joueur(this, Couleur.NOIR);

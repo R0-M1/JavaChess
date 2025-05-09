@@ -55,6 +55,7 @@ public class VueControleur extends JFrame implements Observer {
         sizeX = Plateau.SIZE_X;
         sizeY = Plateau.SIZE_Y;
 
+
         chargerLesIcones();
         placerLesComposantsGraphiques();
 
@@ -93,7 +94,7 @@ public class VueControleur extends JFrame implements Observer {
 
     private void placerLesComposantsGraphiques() {
         setTitle("Jeu d'Échecs");
-        setIconImage(new ImageIcon("assets/images/icone.png").getImage());
+        setIconImage(new ImageIcon(getClass().getClassLoader().getResource("assets/images/icone.png")).getImage());
         setResizable(false);
         setSize(sizeX * pxCase, sizeX * pxCase);
         setLocationRelativeTo(null);
@@ -116,8 +117,6 @@ public class VueControleur extends JFrame implements Observer {
                 jlab.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
-                        System.out.println(xx + " " + yy);
-
                         if (caseClic1 == null) {
                             caseClic1 = plateau.getCases()[xx][yy];
                             Piece pieceClique = caseClic1.getPiece();
@@ -227,7 +226,6 @@ public class VueControleur extends JFrame implements Observer {
             }
         }
         this.repaint(); // Pour dessiner tout d'une seule fois
-
     }
 
     private void afficherFinDePartie(String titre, String message, String imagePath) {
@@ -284,8 +282,8 @@ public class VueControleur extends JFrame implements Observer {
                 JOptionPane.DEFAULT_OPTION,
                 JOptionPane.PLAIN_MESSAGE,
                 null,
-                options, // Display the images
-                options[0]  // Default selection is the first image ("Dame")
+                options,
+                options[0]
         );
 
         Piece nouvellePiece = null;

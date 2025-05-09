@@ -5,7 +5,7 @@ import modele.pieces.Piece;
 import java.awt.*;
 
 public class Case {
-    private Point position;
+    private final Point position;
     private Piece piece;
 
     public Case(int x, int y) {
