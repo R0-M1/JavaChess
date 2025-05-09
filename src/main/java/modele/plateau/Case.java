@@ -23,10 +23,4 @@ public class Case {
     public void setPiece(Piece piece) {
         this.piece = piece;
     }
-
-    // TODO: temporaire
-    @Override
-    public String toString() {
-        return piece!=null ? piece.toString() : "\u001B[48;5;250m" + "\u001B[0m";
-    }
 }

@@ -305,7 +305,7 @@ public class VueControleur extends JFrame implements Observer {
         }
 
         if (nouvellePiece != null) {
-            plateau.promouvoirPion(plateau.getCases()[jeu.dernierCoup.arr.x][jeu.dernierCoup.arr.y], nouvellePiece);  // TODO: Utiliser dernierCoup (oui le meme que celui qui va etre utilisé pour en passant) pour savoir la case de destination du pion voulant faire la promotion
+            plateau.promouvoirPion(plateau.getCases()[jeu.dernierCoup.arr.x][jeu.dernierCoup.arr.y], nouvellePiece);
         }
 
         mettreAJourAffichage();

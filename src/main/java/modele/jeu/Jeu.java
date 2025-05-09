@@ -6,6 +6,8 @@ import modele.pieces.Roi;
 import modele.plateau.Plateau;
 import modele.plateau.Case;
 
+import java.util.Random;
+
 public class Jeu extends Thread {
     private Plateau plateau;
     private Joueur joueurB;
@@ -16,11 +18,25 @@ public class Jeu extends Thread {
     private Couleur tourActuel;
     private GameEvent currentEvent;
 
-    public Jeu() {
+    public Jeu(boolean modeIA) {
         this.plateau = new Plateau(this);
-        this.joueurB = new Joueur(this, Couleur.BLANC);
-        this.joueurN = new Joueur(this, Couleur.NOIR);
         this.tourActuel = Couleur.BLANC; // Le tour commence avec les Blancs
+
+        if (modeIA) {
+            Random rand = new Random();
+            boolean iaEstBlanc = rand.nextBoolean();
+            iaEstBlanc = false;
+            if (iaEstBlanc) {
+                this.joueurB = new JoueurIA(this, Couleur.BLANC);
+                this.joueurN = new Joueur(this, Couleur.NOIR);
+            } else {
+                this.joueurB = new Joueur(this, Couleur.BLANC);
+                this.joueurN = new JoueurIA(this, Couleur.NOIR);
+            }
+        } else {
+            this.joueurB = new Joueur(this, Couleur.BLANC);
+            this.joueurN = new Joueur(this, Couleur.NOIR);
+        }
     }
 
     @Override

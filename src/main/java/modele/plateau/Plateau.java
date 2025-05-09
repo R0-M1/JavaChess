@@ -138,4 +138,58 @@ public class Plateau extends Observable {
     public Jeu getJeu() {
         return jeu;
     }
+
+    public String getFEN() {
+        StringBuilder fen = new StringBuilder();
+
+        for (int y = 0; y < SIZE_Y; y++) {
+            int emptyCount = 0;
+
+            for (int x = 0; x < SIZE_X; x++) {
+                Piece piece = tab[x][y].getPiece();
+
+                if (piece == null) {
+                    emptyCount++;
+                } else {
+                    if (emptyCount > 0) {
+                        fen.append(emptyCount);
+                        emptyCount = 0;
+                    }
+
+                    char symbol = getFENChar(piece);
+                    fen.append(symbol);
+                }
+            }
+
+            if (emptyCount > 0) {
+                fen.append(emptyCount);
+            }
+
+            if (y < SIZE_Y - 1) {
+                fen.append('/');
+            }
+        }
+
+        // Tour du joueur
+        fen.append(" ").append(jeu.getTourActuel() == Couleur.BLANC ? "w" : "b");
+
+        // Simplification pour éviter de complexifié
+        fen.append(" - - 0 1");
+
+        return fen.toString();
+    }
+
+    private char getFENChar(Piece piece) {
+        char c;
+
+        if (piece instanceof Pion) c = 'p';
+        else if (piece instanceof Tour) c = 'r';
+        else if (piece instanceof Cavalier) c = 'n';
+        else if (piece instanceof Fou) c = 'b';
+        else if (piece instanceof Dame) c = 'q';
+        else if (piece instanceof Roi) c = 'k';
+        else c = '?'; // cas inattendu
+
+        return piece.getCouleur() == Couleur.BLANC ? Character.toUpperCase(c) : c;
+    }
 }
