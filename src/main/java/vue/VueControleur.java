@@ -270,11 +270,10 @@ public class VueControleur extends JFrame implements Observer {
     private void demanderPromotion() {
         JLabel messageLabel = new JLabel("Choisissez une promotion");
         messageLabel.setFont(new Font("SansSerif", Font.BOLD, 30));
-        messageLabel.setHorizontalAlignment(SwingConstants.CENTER); // Center the text
+        messageLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        Object[] options = {icoDameB, icoTourB, icoFouB, icoCavalierB}; // Images as options
+        Object[] options = {icoDameB, icoTourB, icoFouB, icoCavalierB};
 
-        // Show the promotion dialog
         int choix = JOptionPane.showOptionDialog(
                 null,
                 messageLabel,
@@ -289,21 +288,21 @@ public class VueControleur extends JFrame implements Observer {
         Piece nouvellePiece = null;
         switch (choix) {
             case 0:
-                nouvellePiece = new Dame(plateau, jeu.getTourActuel());  // Create a Queen (Dame)
+                nouvellePiece = new Dame(plateau, jeu.getTourActuel());
                 break;
             case 1:
-                nouvellePiece = new Tour(plateau, jeu.getTourActuel());  // Create a Rook (Tour)
+                nouvellePiece = new Tour(plateau, jeu.getTourActuel());
                 break;
             case 2:
-                nouvellePiece = new Cavalier(plateau, jeu.getTourActuel());  // Create a Knight (Cavalier)
+                nouvellePiece = new Cavalier(plateau, jeu.getTourActuel());
                 break;
             case 3:
-                nouvellePiece = new Fou(plateau, jeu.getTourActuel());  // Create a Bishop (Fou)
+                nouvellePiece = new Fou(plateau, jeu.getTourActuel());
                 break;
         }
 
         if (nouvellePiece != null) {
-            plateau.promouvoirPion(plateau.getCases()[jeu.dernierCoup.arr.x][jeu.dernierCoup.arr.y], nouvellePiece);
+            plateau.promouvoirPion(plateau.getCases()[jeu.getDernierCoup().arr.x][jeu.getDernierCoup().arr.y], nouvellePiece);
         }
 
         mettreAJourAffichage();
@@ -368,7 +367,6 @@ public class VueControleur extends JFrame implements Observer {
                     SoundPlayer.play("assets/sons/castle.wav");
                     break;
             }
-            // Met à jour la GUI aussi si nécessaire
         }
     }
 }

@@ -9,9 +9,4 @@ public class Tour extends Piece {
         super(plateau, couleur);
         dCA = new DecoratorLigne(this, plateau, null);
     }
-
-    @Override
-    public String toString() {
-        return couleur==Couleur.BLANC ? "♖" : "♜";
-    }
 }

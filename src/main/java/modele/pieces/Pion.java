@@ -9,9 +9,4 @@ public class Pion extends Piece {
         super(plateau, couleur);
         dCA = new DecoratorPion(this, plateau, null);
     }
-
-    @Override
-    public String toString() {
-        return couleur==Couleur.BLANC ? "♙" : "\u265F";
-    }
 }

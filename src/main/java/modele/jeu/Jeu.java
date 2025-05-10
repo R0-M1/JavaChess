@@ -13,7 +13,7 @@ public class Jeu extends Thread {
     private Joueur joueurB;
     private Joueur joueurN;
     public Coup coup;
-    public Coup dernierCoup;
+    private Coup dernierCoup;
 
     private Couleur tourActuel;
     private GameEvent currentEvent;
@@ -51,7 +51,7 @@ public class Jeu extends Thread {
             }
             appliquerCoup(c);
             plateau.notifierChangement(currentEvent);
-            changerTour();
+            changerTour(); // NOTE: Je l'ai mis ici, il était en dessous de notifierChangement de base.
         }
         plateau.notifierChangement(currentEvent);
     }
@@ -104,6 +104,10 @@ public class Jeu extends Thread {
             }
         }
 
+        if (estEnEchec(getTourActuel()==Couleur.BLANC ? Couleur.NOIR : Couleur.BLANC)) {
+            currentEvent = GameEvent.CHECK;
+        }
+
         // Détection promotion
         if (arr.getPiece() instanceof Pion) {
             Pion pion = (Pion) arr.getPiece();
@@ -114,8 +118,6 @@ public class Jeu extends Thread {
         }
 
         dernierCoup = c;
-
-        System.out.println(c.dep.x + " " + c.dep.y + " -> " + c.arr.x + " " + c.arr.y);
     }
 
     private boolean coupValide(Coup c) {
@@ -235,5 +237,9 @@ public class Jeu extends Thread {
 
     public Couleur getTourActuel() {
         return tourActuel;
+    }
+
+    public Coup getDernierCoup() {
+        return dernierCoup;
     }
 }

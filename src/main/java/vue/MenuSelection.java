@@ -20,13 +20,13 @@ public class MenuSelection extends JFrame {
         panel.setBorder(BorderFactory.createEmptyBorder(40, 40, 40, 40));
 
         JLabel label = new JLabel("Choisissez un mode de jeu :", JLabel.CENTER);
-        label.setFont(new Font("SansSerif", Font.BOLD, 36));
+        label.setFont(new Font("SansSerif", Font.BOLD, 52));
         label.setForeground(new Color(50, 50, 200));
 
         JButton btnPvP = new JButton("Joueur vs Joueur");
         JButton btnPvIA = new JButton("Joueur vs IA");
 
-        Font buttonFont = new Font("Arial", Font.BOLD, 24);
+        Font buttonFont = new Font("Arial", Font.BOLD, 46);
         btnPvP.setFont(buttonFont);
         btnPvIA.setFont(buttonFont);
 

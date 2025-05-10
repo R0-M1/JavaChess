@@ -9,9 +9,4 @@ public class Cavalier extends Piece {
         super(plateau, couleur);
         dCA = new DecoratorCavalier(this, plateau, null);
     }
-
-    @Override
-    public String toString() {
-        return couleur==Couleur.BLANC ? "♘" : "♞";
-    }
 }

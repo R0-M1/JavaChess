@@ -42,7 +42,7 @@ public class DecoratorPion extends DecoratorCasesAccessibles {
         }
 
 
-        Coup dernierCoup = plateau.getJeu().dernierCoup;
+        Coup dernierCoup = plateau.getJeu().getDernierCoup();
         if (dernierCoup != null) {
             for (int dx = -1; dx <= 1; dx += 2) {
                 Case caseAdj = plateau.getCaseRelative(c, dx, 0);

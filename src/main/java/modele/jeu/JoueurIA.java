@@ -37,16 +37,11 @@ public class JoueurIA extends Joueur {
 
             int fromNumeric = responseJSON.getInt("fromNumeric");
             int toNumeric = responseJSON.getInt("toNumeric");
-            System.out.println("fromNumeric: " + fromNumeric);
-            System.out.println("toNumeric: " + toNumeric);
 
             int fromY = 8 - fromNumeric % 10;
             int fromX = fromNumeric / 10 - 1;
             int toY = 8 - toNumeric % 10;
             int toX = toNumeric / 10 - 1;
-
-            System.out.println(responseJSON.get("text"));
-            System.out.println(fromX + " " + fromY + " -> " + toX + " " + toY);
 
             return new Coup(jeu.getPlateau().getCases()[fromX][fromY], jeu.getPlateau().getCases()[toX][toY]);
         } catch (IOException e) {

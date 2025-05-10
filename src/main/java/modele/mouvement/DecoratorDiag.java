@@ -37,7 +37,7 @@ public class DecoratorDiag extends DecoratorCasesAccessibles {
                         if (next.getPiece().getCouleur() != piece.getCouleur()) {
                             cases.add(next);
                         }
-                        break; // stop if any piece is there
+                        break;
                     }
                 }
             } while (next != null && next.getPiece() == null);
