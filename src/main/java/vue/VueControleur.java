@@ -19,7 +19,7 @@ import modele.plateau.Plateau;
 /**
  * Cette classe a deux fonctions :
  * (1) Vue : proposer une représentation graphique de l'application (cases graphiques, etc.)
- * (2) Controleur : écouter les évènements clavier et déclencher le traitement adapté sur le modèle (clic position départ -> position arrivée pièce))
+ * (2) Controleur : écouter les évènements clavier et déclencher le traitement adapté sur le modèle (clic position départ → position arrivée pièce))
  */
 public class VueControleur extends JFrame implements Observer {
     private Plateau plateau;

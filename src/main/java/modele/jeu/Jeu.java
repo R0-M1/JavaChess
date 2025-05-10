@@ -6,8 +6,6 @@ import modele.pieces.Roi;
 import modele.plateau.Plateau;
 import modele.plateau.Case;
 
-import java.util.Random;
-
 public class Jeu extends Thread {
     private Plateau plateau;
     private Joueur joueurB;
@@ -51,7 +49,7 @@ public class Jeu extends Thread {
             }
             appliquerCoup(c);
             plateau.notifierChangement(currentEvent);
-            changerTour(); // NOTE: Je l'ai mis ici, il était en dessous de notifierChangement de base.
+            changerTour();
         }
         plateau.notifierChangement(currentEvent);
     }
