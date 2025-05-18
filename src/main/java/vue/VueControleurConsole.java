@@ -20,16 +20,22 @@ public class VueControleurConsole implements Observer {
 
     private boolean gameOver = false;
     private boolean pause = false;
+    private final boolean modeIA;
 
-    public VueControleurConsole(Jeu jeu) {
+    public VueControleurConsole(Jeu jeu, boolean modeIA) {
         this.jeu = jeu;
         this.plateau = jeu.getPlateau();
         this.sizeX = Plateau.SIZE_X;
         this.sizeY = Plateau.SIZE_Y;
+        this.modeIA = modeIA;
         plateau.addObserver(this);
 
+        System.out.println("╔════════════════════════════════════════════════════════════╗");
+        System.out.println("║ Commande spéciale:                                         ║");
+        System.out.println("║ - 'save' : Sauvegarder la partie                           ║");
+        System.out.println("╚════════════════════════════════════════════════════════════╝");
+
         afficherEchiquier();
-        demanderCoup();
     }
 
     public void jouer() {
@@ -40,7 +46,9 @@ public class VueControleurConsole implements Observer {
                 throw new RuntimeException(e);
             }
             if (!pause) {
-                demanderCoup();
+                if (!modeIA || jeu.getTourActuel() == Couleur.BLANC) {
+                    demanderCoup();
+                }
             }
         }
     }
@@ -49,7 +57,7 @@ public class VueControleurConsole implements Observer {
         final String RESET = "\u001B[0m";
         final String BLACK_BG = "\u001B[48;5;236m";  // case sombre
         final String WHITE_BG = "\u001B[48;5;250m";  // case claire
-        final String RED_BG = "\u001B[48;5;160m";  // Red
+        final String RED_BG = "\u001B[48;5;160m";  // Rouge
         final String ACCESSIBLE_BG = "\u001B[48;5;46m";  // Vert
         final String BLACK_TEXT = "\u001B[30m"; // texte noir
         final String WHITE_TEXT = "\u001B[97m"; // texte blanc
@@ -104,6 +112,11 @@ public class VueControleurConsole implements Observer {
             System.out.println("║ Tour des " + tourActuel + ". Choisissez une case de départ (ex: 'a2') : ║");
             System.out.println("╚" + (tourActuel==Couleur.BLANC?"═":"") + "═══════════════════════════════════════════════════════════" + "╝");
             String depart = scanner.nextLine();
+
+            if (depart.equalsIgnoreCase("save")) {
+                sauvegarderPartie();
+                continue;
+            }
 
             // Obtenir la case de départ
             Case caseDep = obtenirCaseDepuisString(depart);
@@ -176,6 +189,36 @@ public class VueControleurConsole implements Observer {
         int y = 8 - (ligne - '0');
 
         return plateau.getCases()[x][y];
+    }
+
+    private void sauvegarderPartie() {
+        System.out.println("╔════════════════════════════════════════╗");
+        System.out.println("║         SAUVEGARDER LA PARTIE          ║");
+        System.out.println("╠════════════════════════════════════════╣");
+        System.out.println("║ Entrez le chemin complet du fichier    ║");
+        System.out.println("║ (avec extension .pgn ou .fen)          ║");
+        System.out.println("╚════════════════════════════════════════╝");
+
+        Scanner scanner = new Scanner(System.in);
+
+        String chemin = scanner.nextLine().trim();
+
+        if (chemin.isEmpty()) {
+            System.out.println("Sauvegarde annulée.");
+            return;
+        }
+
+        if (!chemin.toLowerCase().endsWith(".pgn") && !chemin.toLowerCase().endsWith(".fen")) {
+            System.out.println("Format non reconnu. Sauvegarde annulée.");
+            return;
+        }
+
+        try {
+            jeu.exporterPartie(chemin);
+            System.out.println("Partie sauvegardée avec succès dans: " + chemin);
+        } catch (Exception e) {
+            System.out.println("Erreur lors de la sauvegarde: " + e.getMessage());
+        }
     }
 
     private void demanderPromotion() {

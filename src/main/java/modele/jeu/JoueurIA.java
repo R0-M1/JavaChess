@@ -1,18 +1,25 @@
 package modele.jeu;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
 import java.io.*;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 public class JoueurIA extends Joueur {
-    public JoueurIA(Jeu jeu, Couleur couleur) {
+    private static final String API_URL = "https://stockfish.online/api/s/v2.php";
+
+    private Integer depth;
+
+    public JoueurIA(Jeu jeu, Couleur couleur, Integer depth) {
         super(jeu, couleur);
+        this.depth = depth;
     }
 
     @Override
@@ -20,14 +27,13 @@ public class JoueurIA extends Joueur {
         try (CloseableHttpClient client = HttpClients.createDefault()) {
             String fen = jeu.getPlateau().getFEN();
 
-            // Créer la requête POST
-            HttpPost request = new HttpPost("https://chess-api.com/v1");
-            request.setHeader("Content-Type", "application/json");
+            URI uri = new URIBuilder(API_URL)
+                    .addParameter("fen", fen)
+                    .addParameter("depth", Integer.toString(depth))
+                    .build();
 
-            // Corps de la requête JSON
-            String jsonInputString = "{\"fen\": \"" + fen + "\"}";
-            StringEntity entity = new StringEntity(jsonInputString);
-            request.setEntity(entity);
+            // Créer la requête GET
+            HttpGet request = new HttpGet(uri);
 
             // Envoyer la requête et obtenir la réponse
             HttpResponse response = client.execute(request);
@@ -35,18 +41,22 @@ public class JoueurIA extends Joueur {
 
             JSONObject responseJSON = new JSONObject(responseString);
 
-            int fromNumeric = responseJSON.getInt("fromNumeric");
-            int toNumeric = responseJSON.getInt("toNumeric");
+            String bestMove = responseJSON.getString("bestmove").split(" ")[1];
 
-            int fromY = 8 - fromNumeric % 10;
-            int fromX = fromNumeric / 10 - 1;
-            int toY = 8 - toNumeric % 10;
-            int toX = toNumeric / 10 - 1;
+            String from = bestMove.substring(0, 2);
+            String to = bestMove.substring(2, 4);
+
+            int fromX = from.charAt(0) - 'a';
+            int fromY = 8 - (from.charAt(1) - '0');
+            int toX = to.charAt(0) - 'a';
+            int toY = 8 - (to.charAt(1) - '0');
 
             return new Coup(jeu.getPlateau().getCases()[fromX][fromY], jeu.getPlateau().getCases()[toX][toY]);
         } catch (IOException e) {
             e.printStackTrace();
             return null;
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
         }
     }
 

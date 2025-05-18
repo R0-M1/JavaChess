@@ -13,6 +13,8 @@ Utiliser JAVA 8 pour éviter problème de DPI windows
 ### Extensions
 ***
 
-* Ajouter une IA pour jouer contre nous (appel de cette IA à travers une API web)
-* Développer la version console du jeu : `VueControllerConsole.java`
+* IA jouant contre nous avec sélection du niveau de difficulté (appel de cette IA à travers une API web)
+* Développement de la version console du jeu
 * Fin de partie par répétition
+* Enregistrement de la partie au format PGN ou FEN
+* Échecs 960 (Échecs aléatoires Fischer)

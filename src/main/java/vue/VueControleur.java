@@ -1,20 +1,20 @@
 package vue;
 
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import modele.jeu.*;
 import modele.pieces.*;
 import modele.plateau.Case;
 import modele.plateau.Plateau;
-
 
 /**
  * Cette classe a deux fonctions :
@@ -55,9 +55,18 @@ public class VueControleur extends JFrame implements Observer {
         sizeX = Plateau.SIZE_X;
         sizeY = Plateau.SIZE_Y;
 
-
         chargerLesIcones();
         placerLesComposantsGraphiques();
+
+        // Ajouter le raccourci clavier Ctrl+S pour sauvegarder
+        KeyStroke ctrlS = KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK);
+        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(ctrlS, "sauvegarder");
+        getRootPane().getActionMap().put("sauvegarder", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                sauvegarderPartie();
+            }
+        });
 
         plateau.addObserver(this);
 
@@ -145,10 +154,6 @@ public class VueControleur extends JFrame implements Observer {
         add(grilleJLabels);
     }
 
-
-    /**
-     * Il y a une grille du côté du modèle ( modele.jeu.getGrille() ) et une grille du côté de la vue (tabJLabel)
-     */
     private void mettreAJourAffichage() {
         for (int x = 0; x < sizeX; x++) {
             for (int y = 0; y < sizeY; y++) {
@@ -308,6 +313,35 @@ public class VueControleur extends JFrame implements Observer {
         mettreAJourAffichage();
     }
 
+    private void sauvegarderPartie() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Sauvegarder la partie");
+        FileNameExtensionFilter pgnFilter = new FileNameExtensionFilter("Fichier PGN (*.pgn)", "pgn");
+        FileNameExtensionFilter fenFilter = new FileNameExtensionFilter("Fichier FEN (*.fen)", "fen");
+
+        fileChooser.addChoosableFileFilter(pgnFilter);
+        fileChooser.addChoosableFileFilter(fenFilter);
+        fileChooser.setFileFilter(pgnFilter);
+
+        if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+            File fichier = fileChooser.getSelectedFile();
+            String chemin = fichier.getAbsolutePath();
+
+            FileNameExtensionFilter selected = (FileNameExtensionFilter) fileChooser.getFileFilter();
+            if (selected == fenFilter) {
+                chemin += ".fen";
+            } else if (selected == pgnFilter) {
+                chemin += ".pgn";
+            }
+
+            jeu.exporterPartie(chemin);
+
+            JOptionPane.showMessageDialog(this,
+                    "Partie sauvegardée avec succès.",
+                    "Sauvegarde réussie",
+                    JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
 
     @Override
     public void update(Observable o, Object arg) {
@@ -370,5 +404,3 @@ public class VueControleur extends JFrame implements Observer {
         }
     }
 }
-
-

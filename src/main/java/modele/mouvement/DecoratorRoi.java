@@ -33,7 +33,8 @@ public class DecoratorRoi extends DecoratorCasesAccessibles {
             }
         }
 
-        if (!piece.aDejaBouge) {
+        // Désactivation du roque pour le mode échec960
+        if (!piece.aDejaBouge && !plateau.isChess960()) {
             int y = (piece.getCouleur() == Couleur.BLANC) ? Plateau.SIZE_Y - 1 : 0;
 
             // Petit roque
