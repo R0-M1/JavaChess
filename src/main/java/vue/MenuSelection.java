@@ -235,7 +235,7 @@ public class MenuSelection extends JFrame {
     }
 
     private JPopupMenu setupIAMenuCharger(JButton btnChargerPvIA) {
-        Color backgroundColor = new Color(100, 200, 150);
+        Color backgroundColor = new Color(200, 150, 100);
         JPopupMenu menuChargerIA = new JPopupMenu();
         JPanel chargerIAPanel = createMenuPanel(backgroundColor);
 
