@@ -91,11 +91,6 @@ public class Jeu extends Thread {
             currentEvent = GameEvent.CAPTURE;
         }
 
-        // Déplacement simple
-        arr.setPiece(piece);
-        piece.setCase(arr);
-        dep.setPiece(null);
-
         // Roque
         if (piece instanceof Roi && Math.abs(c.arr.x - c.dep.x) == 2) {
             int y = c.dep.y;
@@ -118,6 +113,13 @@ public class Jeu extends Thread {
             }
         }
 
+        String notationPGN = convertirCoupEnPGN(c, piece);
+
+        // Déplacement simple
+        arr.setPiece(piece);
+        piece.setCase(arr);
+        dep.setPiece(null);
+
         if (estEnEchec(getTourActuel()==Couleur.BLANC ? Couleur.NOIR : Couleur.BLANC)) {
             currentEvent = GameEvent.CHECK;
         }
@@ -139,7 +141,6 @@ public class Jeu extends Thread {
         // Ajouter le coup au format PGN
         historiqueCoups.add(c);
 
-        String notationPGN = convertirCoupEnPGN(c, piece);
         if (piece.getCouleur() == Couleur.BLANC) {
             mouvementsPGN.add(numeroMouvement + ". " + notationPGN);
         } else {
@@ -249,13 +250,11 @@ public class Jeu extends Thread {
         }
     }
 
-    // Méthode pour alterner les tours entre les joueurs
     public void changerTour() {
         // Alterne entre les couleurs de joueur
         tourActuel = (tourActuel == Couleur.BLANC) ? Couleur.NOIR : Couleur.BLANC;
     }
 
-    // Renvoie le joueur dont c'est le tour
     private Joueur getJoueurCourant() {
         if (tourActuel == Couleur.BLANC) {
             return joueurB;
@@ -293,6 +292,49 @@ public class Jeu extends Thread {
             else if (piece instanceof Tour) notation.append("R");
             else if (piece instanceof Fou) notation.append("B");
             else if (piece instanceof Cavalier) notation.append("N");
+
+            // Vérifier si le coup est ambigu
+            boolean ambigu = false;
+            boolean memeCol = false;
+            boolean memeLigne = false;
+
+            // Parcourir toutes les pièces du même type et de la même couleur
+            for (int x = 0; x < Plateau.SIZE_X; x++) {
+                for (int y = 0; y < Plateau.SIZE_Y; y++) {
+                    Piece autrePiece = plateau.getCases()[x][y].getPiece();
+                    if (autrePiece != null && autrePiece != piece && 
+                        autrePiece.getClass() == piece.getClass() && 
+                        autrePiece.getCouleur() == piece.getCouleur()) {
+
+                        // Vérifier si cette pièce peut aussi aller à la case d'arrivée
+                        Case caseArrivee = plateau.getCases()[c.arr.x][c.arr.y];
+                        if (autrePiece.getDCA().getCasesValides().contains(caseArrivee)) {
+                            ambigu = true;
+
+                            // Vérifier si les pièces sont sur la même colonne ou la même ligne
+                            if (autrePiece.getCase().getPosition().x == c.dep.x) {
+                                memeCol = true;
+                            }
+                            if (autrePiece.getCase().getPosition().y == c.dep.y) {
+                                memeLigne = true;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Ajouter les coordonnées de départ si nécessaire
+            if (ambigu) {
+                if (!memeCol) {
+                    notation.append((char)('a' + c.dep.x));
+                } else if (!memeLigne) {
+                    notation.append(8 - c.dep.y);
+                } else {
+                    notation.append((char)('a' + c.dep.x));
+                    notation.append(8 - c.dep.y);
+                }
+            }
+
         } else if (currentEvent == GameEvent.CAPTURE) {
             notation.append((char)('a' + c.dep.x));
         }
@@ -306,7 +348,7 @@ public class Jeu extends Thread {
         notation.append((char)('a' + c.arr.x));
         notation.append(8 - c.arr.y); // Les rangs sont inversés en PGN (8 en haut, 1 en bas)
 
-        // Indication d'échec ou d'échec et mat
+        // Indication d'échec
         if (currentEvent == GameEvent.CHECK) {
             notation.append("+");
         }
@@ -314,7 +356,6 @@ public class Jeu extends Thread {
         return notation.toString();
     }
 
-    // Méthode pour mettre à jour la notation PGN après une promotion
     public void mettreAJourPromotionPGN(Piece piecePromotion) {
         if (piecePromotion == null || mouvementsPGN.isEmpty()) return;
 
@@ -515,12 +556,42 @@ public class Jeu extends Thread {
             typePiece = 'P';
         }
 
+        // Extraire les coordonnées de départ PGN d'une pièce 
+        int colDep = -1; // -1 si non spécifié
+        int ligneDep = -1;
+
+        // Analyser le coup PGN pour extraire les coordonnées de départ
+        if (typePiece != 'P') {
+            String resteCoup = coupPGN.substring(1, coupPGN.length() - 2);
+
+            if (resteCoup.contains("x")) {
+                resteCoup = resteCoup.replace("x", "");
+            }
+
+            for (char c : resteCoup.toCharArray()) {
+                if (c >= 'a' && c <= 'h') {
+                    colDep = c - 'a';
+                } else if (c >= '1' && c <= '8') {
+                    ligneDep = 8 - (c - '0');
+                }
+            }
+        } else if (coupPGN.contains("x")) {
+            char fileChar = coupPGN.charAt(0);
+            if (fileChar >= 'a' && fileChar <= 'h') {
+                colDep = fileChar - 'a';
+            }
+        }
+
         // Trouver la pièce qui peut faire ce mouvement
         Piece pieceADeplacer = null;
         Case caseDep = null;
 
         for (int x = 0; x < Plateau.SIZE_X; x++) {
             for (int y = 0; y < Plateau.SIZE_Y; y++) {
+                // Vérifier si la position correspond aux coordonnées de départ PGN
+                if (colDep != -1 && x != colDep) continue;
+                if (ligneDep != -1 && y != ligneDep) continue;
+
                 Piece piece = plateau.getCases()[x][y].getPiece();
                 if (piece != null && piece.getCouleur() == couleur) {
                     // Vérifie si c'est le bon type de pièce

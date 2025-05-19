@@ -299,10 +299,10 @@ public class VueControleur extends JFrame implements Observer {
                 nouvellePiece = new Tour(plateau, jeu.getTourActuel());
                 break;
             case 2:
-                nouvellePiece = new Cavalier(plateau, jeu.getTourActuel());
+                nouvellePiece = new Fou(plateau, jeu.getTourActuel());
                 break;
             case 3:
-                nouvellePiece = new Fou(plateau, jeu.getTourActuel());
+                nouvellePiece = new Cavalier(plateau, jeu.getTourActuel());
                 break;
         }
 
@@ -328,9 +328,9 @@ public class VueControleur extends JFrame implements Observer {
             String chemin = fichier.getAbsolutePath();
 
             FileNameExtensionFilter selected = (FileNameExtensionFilter) fileChooser.getFileFilter();
-            if (selected == fenFilter) {
+            if (selected == fenFilter && !chemin.toLowerCase().endsWith(".fen")) {
                 chemin += ".fen";
-            } else if (selected == pgnFilter) {
+            } else if (selected == pgnFilter && !chemin.toLowerCase().endsWith(".pgn")) {
                 chemin += ".pgn";
             }
 
