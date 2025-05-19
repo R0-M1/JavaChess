@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>C:/Users/Romain/IdeaProjects/JavaChess/src/main/java</OriginalElement>
+  <nodes>
+    <node x="1207.258487654321" y="2593.0">modele.pieces.Dame</node>
+    <node x="-1033.2831790123455" y="150.0">vue.VueControleur</node>
+    <node x="383.75" y="1946.0">modele.plateau.Plateau</node>
+    <node x="3042.75" y="-14.0">Main</node>
+    <node x="489.0918209876545" y="2770.0">modele.pieces.Piece</node>
+    <node x="-252.9135802469134" y="2186.5">modele.jeu.Coup</node>
+    <node x="503.508487654321" y="3187.0">modele.mouvement.DecoratorCasesAccessibles</node>
+    <node x="-212.83333333333326" y="3211.0">modele.jeu.Couleur</node>
+    <node x="1599.5470679012346" y="2078.0">modele.jeu.GameEvent</node>
+    <node x="172.0000000000001" y="995.0">modele.jeu.Jeu</node>
+    <node x="2134.8418209876545" y="2878.5">modele.mouvement.DecoratorCavalier</node>
+    <node x="1693.8418209876545" y="2878.5">modele.mouvement.DecoratorPion</node>
+    <node x="795.0918209876545" y="2878.5">modele.mouvement.DecoratorLigne</node>
+    <node x="988.133487654321" y="2593.0">modele.pieces.Fou</node>
+    <node x="-1276.9253820087367" y="957.8024060584045">vue.SoundPlayer</node>
+    <node x="1243.0918209876545" y="2878.5">modele.mouvement.DecoratorDiag</node>
+    <node x="-599.2831790123455" y="306.0">vue.VueControleurConsole</node>
+    <node x="-754.0" y="1355.0">modele.jeu.JoueurIA</node>
+    <node x="1759.258487654321" y="2593.0">modele.pieces.Cavalier</node>
+    <node x="3054.341820987654" y="306.0">vue.MenuSelectionConsole</node>
+    <node x="-708.5" y="2162.0">modele.jeu.Joueur</node>
+    <node x="3362.3418209876545" y="246.0">vue.MenuSelection</node>
+    <node x="2320.8418209876545" y="2593.0">modele.pieces.Roi</node>
+    <node x="1398.008487654321" y="3199.0">modele.plateau.Case</node>
+    <node x="1427.258487654321" y="2593.0">modele.pieces.Pion</node>
+    <node x="2598.8418209876545" y="2854.0">modele.mouvement.DecoratorRoi</node>
+    <node x="696.6720679012346" y="2593.0">modele.pieces.Tour</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="Main" target="vue.VueControleur" relationship="CREATE">
+      <point x="-109.5" y="0.0" />
+      <point x="-864.7831790123455" y="42.0" />
+      <point x="0.0" y="-380.5" />
+    </edge>
+    <edge source="modele.jeu.Jeu" target="modele.jeu.GameEvent" relationship="TO_ONE">
+      <point x="-76.5" y="428.5" />
+      <point x="248.5000000000001" y="1874.0" />
+      <point x="-93.03317901234561" y="1874.0" />
+      <point x="-93.03317901234561" y="1904.0" />
+      <point x="1708.5470679012346" y="1904.0" />
+      <point x="0.0" y="-164.5" />
+    </edge>
+    <edge source="modele.jeu.Joueur" target="modele.jeu.Couleur" relationship="TO_ONE">
+      <point x="0.0" y="80.5" />
+      <point x="-617.0" y="3096.0" />
+      <point x="-115.33333333333326" y="3096.0" />
+      <point x="0.0" y="-80.5" />
+    </edge>
+    <edge source="modele.pieces.Pion" target="modele.mouvement.DecoratorPion" relationship="CREATE">
+      <point x="48.0" y="31.5" />
+      <point x="1571.258487654321" y="2698.0" />
+      <point x="1904.3418209876545" y="2698.0" />
+      <point x="0.0" y="-44.0" />
+    </edge>
+    <edge source="modele.pieces.Fou" target="modele.pieces.Piece" relationship="GENERALIZATION">
+      <point x="47.0" y="31.5" />
+      <point x="1129.133487654321" y="2688.0" />
+      <point x="1335.7970679012346" y="2688.0" />
+      <point x="1335.7970679012346" y="2738.0" />
+      <point x="703.5918209876545" y="2738.0" />
+      <point x="71.5" y="-152.5" />
+    </edge>
+    <edge source="modele.pieces.Roi" target="modele.pieces.Piece" relationship="GENERALIZATION">
+      <point x="-46.0" y="31.5" />
+      <point x="2366.8418209876545" y="2688.0" />
+      <point x="1335.7970679012346" y="2688.0" />
+      <point x="1335.7970679012346" y="2738.0" />
+      <point x="703.5918209876545" y="2738.0" />
+      <point x="71.5" y="-152.5" />
+    </edge>
+    <edge source="vue.VueControleurConsole" target="modele.jeu.Coup" relationship="CREATE">
+      <point x="-73.5" y="224.5" />
+      <point x="-525.7831790123455" y="933.0" />
+      <point x="-496.5" y="933.0" />
+      <point x="-496.5" y="1874.0" />
+      <point x="-527.1635802469134" y="1874.0" />
+      <point x="-527.1635802469134" y="1914.0" />
+      <point x="-210.9135802469134" y="1914.0" />
+      <point x="-42.0" y="-56.0" />
+    </edge>
+    <edge source="modele.pieces.Tour" target="modele.mouvement.DecoratorLigne" relationship="CREATE">
+      <point x="-48.25" y="31.5" />
+      <point x="744.9220679012346" y="2678.0" />
+      <point x="670.0470679012346" y="2678.0" />
+      <point x="670.0470679012346" y="2728.0" />
+      <point x="1009.0918209876545" y="2728.0" />
+      <point x="0.0" y="-44.0" />
+    </edge>
+    <edge source="modele.pieces.Pion" target="modele.pieces.Piece" relationship="GENERALIZATION">
+      <point x="-48.0" y="31.5" />
+      <point x="1475.258487654321" y="2688.0" />
+      <point x="1335.7970679012346" y="2688.0" />
+      <point x="1335.7970679012346" y="2738.0" />
+      <point x="703.5918209876545" y="2738.0" />
+      <point x="71.5" y="-152.5" />
+    </edge>
+    <edge source="vue.VueControleurConsole" target="modele.jeu.Jeu" relationship="TO_ONE">
+      <point x="73.5" y="224.5" />
+      <point x="-378.7831790123455" y="933.0" />
+      <point x="-480.25" y="933.0" />
+      <point x="-480.25" y="943.0" />
+      <point x="-190.5331790123455" y="943.0" />
+      <point x="-190.5331790123455" y="963.0" />
+      <point x="248.5000000000001" y="963.0" />
+      <point x="-76.5" y="-428.5" />
+    </edge>
+    <edge source="modele.plateau.Plateau" target="modele.pieces.Fou" relationship="CREATE">
+      <point x="86.25" y="296.5" />
+      <point x="642.5" y="2561.0" />
+      <point x="1504.2168209876545" y="2561.0" />
+      <point x="1504.2168209876545" y="2571.0" />
+      <point x="1082.133487654321" y="2571.0" />
+      <point x="0.0" y="-31.5" />
+    </edge>
+    <edge source="modele.plateau.Plateau" target="modele.pieces.Roi" relationship="CREATE">
+      <point x="86.25" y="296.5" />
+      <point x="642.5" y="2561.0" />
+      <point x="1504.2168209876545" y="2561.0" />
+      <point x="1504.2168209876545" y="2571.0" />
+      <point x="2412.8418209876545" y="2571.0" />
+      <point x="0.0" y="-31.5" />
+    </edge>
+    <edge source="modele.mouvement.DecoratorPion" target="modele.mouvement.DecoratorCasesAccessibles" relationship="GENERALIZATION">
+      <point x="0.0" y="44.0" />
+      <point x="1904.3418209876545" y="3096.0" />
+      <point x="1635.008487654321" y="3096.0" />
+      <point x="1635.008487654321" y="3166.0" />
+      <point x="838.758487654321" y="3166.0" />
+      <point x="111.75" y="-104.5" />
+    </edge>
+    <edge source="vue.VueControleur" target="modele.plateau.Plateau" relationship="TO_ONE">
+      <point x="-30.0" y="380.5" />
+      <point x="-894.7831790123455" y="3428.5" />
+      <point x="3369.8418209876545" y="3428.5" />
+      <point x="3369.8418209876545" y="2424.5" />
+      <point x="172.5" y="182.0" />
+    </edge>
+    <edge source="Main" target="vue.VueControleurConsole" relationship="CREATE">
+      <point x="0.0" y="56.0" />
+      <point x="3152.25" y="124.0" />
+      <point x="-452.2831790123455" y="124.0" />
+      <point x="0.0" y="-224.5" />
+    </edge>
+    <edge source="modele.jeu.JoueurIA" target="modele.jeu.Joueur" relationship="GENERALIZATION">
+      <point x="-61.75" y="68.5" />
+      <point x="-692.25" y="1874.0" />
+      <point x="-662.75" y="1874.0" />
+      <point x="-45.75" y="-80.5" />
+    </edge>
+    <edge source="modele.pieces.Piece" target="modele.jeu.Couleur" relationship="TO_ONE">
+      <point x="0.0" y="152.5" />
+      <point x="632.0918209876545" y="3096.0" />
+      <point x="-22.249999999999886" y="3096.0" />
+      <point x="-22.249999999999886" y="3126.0" />
+      <point x="-115.33333333333326" y="3126.0" />
+      <point x="0.0" y="-80.5" />
+    </edge>
+    <edge source="modele.plateau.Plateau" target="modele.pieces.Pion" relationship="CREATE">
+      <point x="86.25" y="296.5" />
+      <point x="642.5" y="2561.0" />
+      <point x="1504.2168209876545" y="2561.0" />
+      <point x="1504.2168209876545" y="2571.0" />
+      <point x="1523.258487654321" y="2571.0" />
+      <point x="0.0" y="-31.5" />
+    </edge>
+    <edge source="modele.pieces.Dame" target="modele.mouvement.DecoratorDiag" relationship="CREATE">
+      <point x="-50.0" y="31.5" />
+      <point x="1257.258487654321" y="2678.0" />
+      <point x="892.5470679012346" y="2678.0" />
+      <point x="892.5470679012346" y="2708.0" />
+      <point x="1115.0470679012346" y="2708.0" />
+      <point x="1115.0470679012346" y="2748.0" />
+      <point x="1454.0918209876545" y="2748.0" />
+      <point x="0.0" y="-44.0" />
+    </edge>
+    <edge source="modele.jeu.Joueur" target="modele.jeu.Jeu" relationship="TO_ONE">
+      <point x="45.75" y="-80.5" />
+      <point x="-571.25" y="1904.0" />
+      <point x="-93.03317901234561" y="1904.0" />
+      <point x="-93.03317901234561" y="1874.0" />
+      <point x="248.5000000000001" y="1874.0" />
+      <point x="-76.5" y="428.5" />
+    </edge>
+    <edge source="modele.jeu.Jeu" target="modele.jeu.Joueur" relationship="TO_ONE">
+      <point x="-76.5" y="428.5" />
+      <point x="248.5000000000001" y="1874.0" />
+      <point x="-93.03317901234561" y="1874.0" />
+      <point x="-93.03317901234561" y="1904.0" />
+      <point x="-571.25" y="1904.0" />
+      <point x="45.75" y="-80.5" />
+    </edge>
+    <edge source="modele.plateau.Plateau" target="modele.jeu.Jeu" relationship="TO_ONE">
+      <point x="-86.25" y="-296.5" />
+      <point x="470.0" y="1924.0" />
+      <point x="-213.11651234567898" y="1924.0" />
+      <point x="-213.11651234567898" y="1894.0" />
+      <point x="-93.03317901234561" y="1894.0" />
+      <point x="-93.03317901234561" y="1874.0" />
+      <point x="248.5000000000001" y="1874.0" />
+      <point x="-76.5" y="428.5" />
+    </edge>
+    <edge source="modele.jeu.Jeu" target="modele.plateau.Plateau" relationship="TO_ONE">
+      <point x="-76.5" y="428.5" />
+      <point x="248.5000000000001" y="1874.0" />
+      <point x="-93.03317901234561" y="1874.0" />
+      <point x="-93.03317901234561" y="1894.0" />
+      <point x="-213.11651234567898" y="1894.0" />
+      <point x="-213.11651234567898" y="1924.0" />
+      <point x="470.0" y="1924.0" />
+      <point x="-86.25" y="-296.5" />
+    </edge>
+    <edge source="vue.VueControleurConsole" target="modele.plateau.Plateau" relationship="TO_ONE">
+      <point x="73.5" y="224.5" />
+      <point x="-378.7831790123455" y="933.0" />
+      <point x="-480.25" y="933.0" />
+      <point x="-480.25" y="1884.0" />
+      <point x="-213.11651234567898" y="1884.0" />
+      <point x="-213.11651234567898" y="1924.0" />
+      <point x="470.0" y="1924.0" />
+      <point x="-86.25" y="-296.5" />
+    </edge>
+    <edge source="modele.pieces.Fou" target="modele.mouvement.DecoratorDiag" relationship="CREATE">
+      <point x="-47.0" y="31.5" />
+      <point x="1035.133487654321" y="2698.0" />
+      <point x="1115.0470679012346" y="2698.0" />
+      <point x="1115.0470679012346" y="2748.0" />
+      <point x="1454.0918209876545" y="2748.0" />
+      <point x="0.0" y="-44.0" />
+    </edge>
+    <edge source="modele.pieces.Dame" target="modele.mouvement.DecoratorLigne" relationship="CREATE">
+      <point x="-50.0" y="31.5" />
+      <point x="1257.258487654321" y="2678.0" />
+      <point x="892.5470679012346" y="2678.0" />
+      <point x="892.5470679012346" y="2718.0" />
+      <point x="670.0470679012346" y="2718.0" />
+      <point x="670.0470679012346" y="2728.0" />
+      <point x="1009.0918209876545" y="2728.0" />
+      <point x="0.0" y="-44.0" />
+    </edge>
+    <edge source="vue.VueControleur" target="modele.jeu.Coup" relationship="CREATE">
+      <point x="15.0" y="380.5" />
+      <point x="-849.7831790123455" y="3126.0" />
+      <point x="-168.9135802469134" y="3126.0" />
+      <point x="0.0" y="56.0" />
+    </edge>
+    <edge source="modele.jeu.Jeu" target="modele.plateau.Plateau" relationship="CREATE">
+      <point x="76.5" y="428.5" />
+      <point x="401.5" y="1874.0" />
+      <point x="642.5" y="1874.0" />
+      <point x="86.25" y="-296.5" />
+    </edge>
+    <edge source="modele.jeu.Jeu" target="modele.jeu.Coup" relationship="TO_MANY">
+      <point x="-76.5" y="428.5" />
+      <point x="248.5000000000001" y="1874.0" />
+      <point x="-93.03317901234561" y="1874.0" />
+      <point x="-93.03317901234561" y="1904.0" />
+      <point x="-126.9135802469134" y="1904.0" />
+      <point x="42.0" y="-56.0" />
+    </edge>
+    <edge source="Main" target="vue.MenuSelection" relationship="CREATE">
+      <point x="0.0" y="56.0" />
+      <point x="3152.25" y="124.0" />
+      <point x="3559.8418209876545" y="124.0" />
+      <point x="0.0" y="-284.5" />
+    </edge>
+    <edge source="modele.pieces.Piece" target="modele.plateau.Case" relationship="TO_ONE">
+      <point x="0.0" y="152.5" />
+      <point x="632.0918209876545" y="3096.0" />
+      <point x="-22.249999999999886" y="3096.0" />
+      <point x="-22.249999999999886" y="3116.0" />
+      <point x="478.5918209876545" y="3116.0" />
+      <point x="478.5918209876545" y="3156.0" />
+      <point x="1441.758487654321" y="3156.0" />
+      <point x="-43.75" y="-92.5" />
+    </edge>
+    <edge source="modele.plateau.Case" target="modele.pieces.Piece" relationship="TO_ONE">
+      <point x="-43.75" y="-92.5" />
+      <point x="1441.758487654321" y="3156.0" />
+      <point x="478.5918209876545" y="3156.0" />
+      <point x="478.5918209876545" y="3116.0" />
+      <point x="-22.249999999999886" y="3116.0" />
+      <point x="-22.249999999999886" y="3096.0" />
+      <point x="632.0918209876545" y="3096.0" />
+      <point x="0.0" y="152.5" />
+    </edge>
+    <edge source="modele.mouvement.DecoratorCavalier" target="modele.mouvement.DecoratorCasesAccessibles" relationship="GENERALIZATION">
+      <point x="0.0" y="44.0" />
+      <point x="2356.8418209876545" y="3096.0" />
+      <point x="1635.008487654321" y="3096.0" />
+      <point x="1635.008487654321" y="3166.0" />
+      <point x="838.758487654321" y="3166.0" />
+      <point x="111.75" y="-104.5" />
+    </edge>
+    <edge source="Main" target="modele.jeu.Jeu" relationship="CREATE">
+      <point x="0.0" y="56.0" />
+      <point x="3152.25" y="124.0" />
+      <point x="3043.841820987654" y="124.0" />
+      <point x="3043.841820987654" y="933.0" />
+      <point x="401.5" y="933.0" />
+      <point x="76.5" y="-428.5" />
+    </edge>
+    <edge source="modele.mouvement.DecoratorLigne" target="modele.mouvement.DecoratorCasesAccessibles" relationship="GENERALIZATION">
+      <point x="0.0" y="44.0" />
+      <point x="1009.0918209876545" y="3096.0" />
+      <point x="1635.008487654321" y="3096.0" />
+      <point x="1635.008487654321" y="3166.0" />
+      <point x="838.758487654321" y="3166.0" />
+      <point x="111.75" y="-104.5" />
+    </edge>
+    <edge source="modele.mouvement.DecoratorCasesAccessibles" target="modele.plateau.Plateau" relationship="TO_ONE">
+      <point x="-111.75" y="-104.5" />
+      <point x="615.258487654321" y="3146.0" />
+      <point x="-27.499999999999886" y="3146.0" />
+      <point x="-27.499999999999886" y="3116.0" />
+      <point x="-32.749999999999886" y="3116.0" />
+      <point x="-32.749999999999886" y="2571.0" />
+      <point x="59.508487654321016" y="2571.0" />
+      <point x="59.508487654321016" y="2561.0" />
+      <point x="470.0" y="2561.0" />
+      <point x="-86.25" y="296.5" />
+    </edge>
+    <edge source="modele.plateau.Plateau" target="modele.plateau.Case" relationship="CREATE">
+      <point x="86.25" y="296.5" />
+      <point x="642.5" y="2561.0" />
+      <point x="1504.2168209876545" y="2561.0" />
+      <point x="1504.2168209876545" y="2571.0" />
+      <point x="3022.3418209876545" y="2571.0" />
+      <point x="3022.3418209876545" y="3116.0" />
+      <point x="1529.258487654321" y="3116.0" />
+      <point x="43.75" y="-92.5" />
+    </edge>
+    <edge source="modele.pieces.Tour" target="modele.pieces.Piece" relationship="GENERALIZATION">
+      <point x="48.25" y="31.5" />
+      <point x="841.4220679012346" y="2688.0" />
+      <point x="1335.7970679012346" y="2688.0" />
+      <point x="1335.7970679012346" y="2738.0" />
+      <point x="703.5918209876545" y="2738.0" />
+      <point x="71.5" y="-152.5" />
+    </edge>
+    <edge source="modele.pieces.Cavalier" target="modele.mouvement.DecoratorCavalier" relationship="CREATE">
+      <point x="53.5" y="31.5" />
+      <point x="1919.758487654321" y="2698.0" />
+      <point x="2356.8418209876545" y="2698.0" />
+      <point x="0.0" y="-44.0" />
+    </edge>
+    <edge source="modele.mouvement.DecoratorRoi" target="modele.mouvement.DecoratorCasesAccessibles" relationship="GENERALIZATION">
+      <point x="-1.1368683772161603E-13" y="68.5" />
+      <point x="2805.3418209876545" y="3096.0" />
+      <point x="1635.008487654321" y="3096.0" />
+      <point x="1635.008487654321" y="3166.0" />
+      <point x="838.758487654321" y="3166.0" />
+      <point x="111.75" y="-104.5" />
+    </edge>
+    <edge source="modele.mouvement.DecoratorDiag" target="modele.mouvement.DecoratorCasesAccessibles" relationship="GENERALIZATION">
+      <point x="0.0" y="44.0" />
+      <point x="1454.0918209876545" y="3096.0" />
+      <point x="1635.008487654321" y="3096.0" />
+      <point x="1635.008487654321" y="3166.0" />
+      <point x="838.758487654321" y="3166.0" />
+      <point x="111.75" y="-104.5" />
+    </edge>
+    <edge source="vue.VueControleur" target="modele.plateau.Case" relationship="TO_MANY">
+      <point x="-15.0" y="380.5" />
+      <point x="-879.7831790123455" y="3413.5" />
+      <point x="1485.508487654321" y="3413.5" />
+      <point x="0.0" y="92.5" />
+    </edge>
+    <edge source="modele.jeu.JoueurIA" target="modele.jeu.Coup" relationship="CREATE">
+      <point x="61.75" y="68.5" />
+      <point x="-568.75" y="1874.0" />
+      <point x="-527.1635802469134" y="1874.0" />
+      <point x="-527.1635802469134" y="1914.0" />
+      <point x="-210.9135802469134" y="1914.0" />
+      <point x="-42.0" y="-56.0" />
+    </edge>
+    <edge source="modele.plateau.Plateau" target="modele.pieces.Cavalier" relationship="CREATE">
+      <point x="86.25" y="296.5" />
+      <point x="642.5" y="2561.0" />
+      <point x="1504.2168209876545" y="2561.0" />
+      <point x="1504.2168209876545" y="2571.0" />
+      <point x="1866.258487654321" y="2571.0" />
+      <point x="0.0" y="-31.5" />
+    </edge>
+    <edge source="modele.plateau.Plateau" target="modele.pieces.Tour" relationship="CREATE">
+      <point x="86.25" y="296.5" />
+      <point x="642.5" y="2561.0" />
+      <point x="1504.2168209876545" y="2561.0" />
+      <point x="1504.2168209876545" y="2571.0" />
+      <point x="793.1720679012346" y="2571.0" />
+      <point x="0.0" y="-31.5" />
+    </edge>
+    <edge source="Main" target="vue.MenuSelectionConsole" relationship="CREATE">
+      <point x="0.0" y="56.0" />
+      <point x="3152.25" y="124.0" />
+      <point x="3198.341820987654" y="124.0" />
+      <point x="0.0" y="-224.5" />
+    </edge>
+    <edge source="modele.pieces.Cavalier" target="modele.pieces.Piece" relationship="GENERALIZATION">
+      <point x="-53.5" y="31.5" />
+      <point x="1812.758487654321" y="2688.0" />
+      <point x="1335.7970679012346" y="2688.0" />
+      <point x="1335.7970679012346" y="2738.0" />
+      <point x="703.5918209876545" y="2738.0" />
+      <point x="71.5" y="-152.5" />
+    </edge>
+    <edge source="modele.plateau.Plateau" target="modele.plateau.Case" relationship="TO_MANY">
+      <point x="-86.25" y="296.5" />
+      <point x="470.0" y="2561.0" />
+      <point x="59.508487654321016" y="2561.0" />
+      <point x="59.508487654321016" y="2571.0" />
+      <point x="177.2500000000001" y="2571.0" />
+      <point x="177.2500000000001" y="3106.0" />
+      <point x="478.5918209876545" y="3106.0" />
+      <point x="478.5918209876545" y="3156.0" />
+      <point x="1441.758487654321" y="3156.0" />
+      <point x="-43.75" y="-92.5" />
+    </edge>
+    <edge source="modele.pieces.Roi" target="modele.mouvement.DecoratorRoi" relationship="CREATE">
+      <point x="46.0" y="31.5" />
+      <point x="2458.8418209876545" y="2678.0" />
+      <point x="2805.3418209876545" y="2678.0" />
+      <point x="0.0" y="-68.5" />
+    </edge>
+    <edge source="modele.pieces.Piece" target="modele.mouvement.DecoratorCasesAccessibles" relationship="TO_ONE">
+      <point x="0.0" y="152.5" />
+      <point x="632.0918209876545" y="3096.0" />
+      <point x="-22.249999999999886" y="3096.0" />
+      <point x="-22.249999999999886" y="3136.0" />
+      <point x="-27.499999999999886" y="3136.0" />
+      <point x="-27.499999999999886" y="3146.0" />
+      <point x="615.258487654321" y="3146.0" />
+      <point x="-111.75" y="-104.5" />
+    </edge>
+    <edge source="modele.mouvement.DecoratorCasesAccessibles" target="modele.pieces.Piece" relationship="TO_ONE">
+      <point x="-111.75" y="-104.5" />
+      <point x="615.258487654321" y="3146.0" />
+      <point x="-27.499999999999886" y="3146.0" />
+      <point x="-27.499999999999886" y="3136.0" />
+      <point x="-22.249999999999886" y="3136.0" />
+      <point x="-22.249999999999886" y="3096.0" />
+      <point x="632.0918209876545" y="3096.0" />
+      <point x="0.0" y="152.5" />
+    </edge>
+    <edge source="modele.plateau.Plateau" target="modele.pieces.Dame" relationship="CREATE">
+      <point x="86.25" y="296.5" />
+      <point x="642.5" y="2561.0" />
+      <point x="1504.2168209876545" y="2561.0" />
+      <point x="1504.2168209876545" y="2571.0" />
+      <point x="1307.258487654321" y="2571.0" />
+      <point x="0.0" y="-31.5" />
+    </edge>
+    <edge source="modele.pieces.Piece" target="modele.plateau.Plateau" relationship="TO_ONE">
+      <point x="-71.5" y="-152.5" />
+      <point x="560.5918209876545" y="2678.0" />
+      <point x="223.5000000000001" y="2678.0" />
+      <point x="223.5000000000001" y="2571.0" />
+      <point x="59.508487654321016" y="2571.0" />
+      <point x="59.508487654321016" y="2561.0" />
+      <point x="470.0" y="2561.0" />
+      <point x="-86.25" y="296.5" />
+    </edge>
+    <edge source="vue.VueControleurConsole" target="modele.plateau.Case" relationship="TO_MANY">
+      <point x="73.5" y="224.5" />
+      <point x="-378.7831790123455" y="933.0" />
+      <point x="-480.25" y="933.0" />
+      <point x="-480.25" y="953.0" />
+      <point x="-485.5" y="953.0" />
+      <point x="-485.5" y="3106.0" />
+      <point x="478.5918209876545" y="3106.0" />
+      <point x="478.5918209876545" y="3156.0" />
+      <point x="1441.758487654321" y="3156.0" />
+      <point x="-43.75" y="-92.5" />
+    </edge>
+    <edge source="modele.pieces.Dame" target="modele.pieces.Piece" relationship="GENERALIZATION">
+      <point x="50.0" y="31.5" />
+      <point x="1357.258487654321" y="2688.0" />
+      <point x="1335.7970679012346" y="2688.0" />
+      <point x="1335.7970679012346" y="2738.0" />
+      <point x="703.5918209876545" y="2738.0" />
+      <point x="71.5" y="-152.5" />
+    </edge>
+    <edge source="modele.jeu.Jeu" target="modele.jeu.Couleur" relationship="TO_ONE">
+      <point x="-76.5" y="428.5" />
+      <point x="248.5000000000001" y="1874.0" />
+      <point x="-93.03317901234561" y="1874.0" />
+      <point x="-93.03317901234561" y="1904.0" />
+      <point x="-74.4135802469134" y="1904.0" />
+      <point x="-74.4135802469134" y="3096.0" />
+      <point x="-115.33333333333326" y="3096.0" />
+      <point x="0.0" y="-80.5" />
+    </edge>
+    <edge source="vue.VueControleur" target="modele.jeu.Jeu" relationship="TO_ONE">
+      <point x="168.5" y="-242.0" />
+      <point x="325.0000000000001" y="288.5" />
+      <point x="0.0" y="-428.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="2.2758640738329445" showDependencies="true" x="-1105.5608874630163" y="1034.73471746048" />
+  <SelectedNodes>
+    <node>vue.SoundPlayer</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Constructors</Category>
+    <Category>Fields</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

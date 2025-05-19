@@ -21,7 +21,7 @@ public class MenuSelectionConsole {
 
     private void afficherMenu() {
         System.out.println("╔═════════════════════════════════════════╗");
-        System.out.println("║         MENU DE SÉLECTION               ║");
+        System.out.println("║            MENU DE SÉLECTION            ║");
         System.out.println("╠═════════════════════════════════════════╣");
         System.out.println("║ 1. Joueur vs Joueur                     ║");
         System.out.println("║ 2. Joueur vs IA                         ║");

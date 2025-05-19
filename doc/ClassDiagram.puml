@@ -1,0 +1,362 @@
+@startuml
+
+left to right direction
+!theme carbon-gray
+skinparam linetype ortho
+
+skinparam BackgroundColor white
+skinparam shadowing true
+skinparam roundCorner 20
+skinparam Padding 4
+skinparam class {
+    AttributeIconSize 0
+    FontStyle bold
+    FontSize 15
+}
+
+package "modele" {
+    package "jeu" {
+        enum GameEvent {
+          + CAPTURE:
+          + MOVE:
+          + CHECK:
+          + DRAW:
+          + STALEMATE:
+          + CHECKMATE:
+          + PROMOTION:
+          + CASTLE:
+          + INVALID_MOVE:
+        }
+        class Jeu {
+          + Jeu(boolean, Integer, boolean):
+          + Jeu(String, boolean, Integer):
+          - plateau: Plateau
+          - historiqueCoups: List<Coup>
+          - joueurB: Joueur
+          - joueurN: Joueur
+          - currentEvent: GameEvent
+          - tourActuel: Couleur
+          + numeroMouvement: int
+          - mouvementsPGN: List<String>
+          + coup: Coup
+          - appliquerCoupPGN(String, Couleur): void
+          + estEchecEtMat(Couleur): boolean
+          - partieTermine(): boolean
+          + getTourActuel(): Couleur
+          - getJoueurCourant(): Joueur
+          - estPat(Couleur): boolean
+          + envoyerCoup(Coup): void
+          + importerPGN(String): void
+          + getPlateau(): Plateau
+          + getDernierCoup(): Coup
+          + mettreAJourPromotionPGN(Piece): void
+          + importerPartie(String): void
+          - coupValide(Coup): boolean
+          - exporterFEN(String): void
+          - exporterPGN(String): void
+          + changerTour(): void
+          - jouerPartie(): void
+          + estEnEchec(Couleur): boolean
+          - convertirCoupEnPGN(Coup, Piece): String
+          - aUnCoupLegal(Couleur): boolean
+          - appliquerCoup(Coup): void
+          + run(): void
+          + exporterPartie(String): void
+        }
+        class Joueur {
+          + Joueur(Jeu, Couleur):
+          # jeu: Jeu
+          # couleur: Couleur
+          + getCouleur(): Couleur
+          + getCoup(): Coup
+        }
+        class JoueurIA {
+          + JoueurIA(Jeu, Couleur, Integer):
+          - API_URL: String
+          - depth: Integer
+          + getCoup(): Coup
+        }
+        enum Couleur{
+          + BLANC:
+          + NOIR:
+        }
+        class Coup {
+          + Coup(Case, Case):
+          + dep: Point
+          + arr: Point
+        }
+    }
+
+    package "pieces" {
+        abstract class Piece {
+          + Piece(Plateau, Couleur):
+          # p: Plateau
+          # couleur: Couleur
+          # c: Case
+          # dCA: DecoratorCasesAccessibles
+          + aDejaBouge: boolean
+          + hashCode(): int
+          + getCouleur(): Couleur
+          + getDCA(): DecoratorCasesAccessibles
+          + setCase(Case): void
+          + getCase(): Case
+        }
+        class Pion {
+          + Pion(Plateau, Couleur):
+        }
+        class Fou {
+          + Fou(Plateau, Couleur):
+        }
+        class Cavalier {
+          + Cavalier(Plateau, Couleur):
+        }
+        class Dame {
+          + Dame(Plateau, Couleur):
+        }
+        class Roi {
+          + Roi(Plateau, Couleur):
+        }
+        class Tour {
+          + Tour(Plateau, Couleur):
+        }
+    }
+
+    package "mouvement" {
+        abstract class DecoratorCasesAccessibles {
+          + DecoratorCasesAccessibles(Piece, Plateau, DecoratorCasesAccessibles):
+          ~ plateau: Plateau
+          ~ piece: Piece
+          ~ base: DecoratorCasesAccessibles
+          + getCA(): ArrayList<Case>
+          + getCasesValides(): ArrayList<Case>
+          + getMesCA(): ArrayList<Case>
+        }
+        class DecoratorCavalier {
+          + DecoratorCavalier(Piece, Plateau, DecoratorCasesAccessibles):
+          + getMesCA(): ArrayList<Case>
+        }
+        class DecoratorDiag {
+          + DecoratorDiag(Piece, Plateau, DecoratorCasesAccessibles):
+          + getMesCA(): ArrayList<Case>
+        }
+        class DecoratorLigne {
+          + DecoratorLigne(Piece, Plateau, DecoratorCasesAccessibles):
+          + getMesCA(): ArrayList<Case>
+        }
+        class DecoratorPion {
+          + DecoratorPion(Piece, Plateau, DecoratorCasesAccessibles):
+          + getMesCA(): ArrayList<Case>
+        }
+        class DecoratorRoi {
+          + DecoratorRoi(Piece, Plateau, DecoratorCasesAccessibles):
+          - enSimulation: boolean
+          - verifierRoque(int, int, int, int, boolean): boolean
+          + getMesCA(): ArrayList<Case>
+        }
+    }
+
+    package "plateau" {
+        class Plateau {
+          + Plateau(Jeu, boolean):
+          - jeu: Jeu
+          + SIZE_Y: int
+          - chess960: boolean
+          - tab: Case[][]
+          + historiquePositions: HashMap<Integer, Integer>
+          + SIZE_X: int
+          - map: HashMap<Case, Point>
+          + getCases(): Case[][]
+          + getJeu(): Jeu
+          + getFEN(): String
+          - placerPieces(): void
+          + setChess960(boolean): void
+          - initPlateauVide(): void
+          + hashPlateau(): int
+          - getFENChar(Piece): char
+          + promouvoirPion(Case, Piece): void
+          + isChess960(): boolean
+          + placerPiecesChess960(): void
+          - createPieceFromFEN(char): Piece?
+          + getCaseRelative(Case, int, int): Case
+          + notifierChangement(Object): void
+          + importerFEN(String): void
+        }
+        class Case {
+          + Case(int, int):
+          - position: Point
+          - piece: Piece
+          + getPosition(): Point
+          + setPiece(Piece): void
+          + getPiece(): Piece
+        }
+    }
+}
+
+package "vue" {
+    together {
+        class MenuSelection {
+          + MenuSelection():
+          - chemin: String
+          - niveauDifficulte: String
+          - choixFait: boolean
+          - modeIA: boolean
+          - echec960: boolean
+          - chargerPartie(): void
+          - setupIAMenuCharger(JButton): JPopupMenu
+          - setupButtons(JButton, JButton, JButton, JButton): void
+          + getNiveauDifficulte(): String
+          - createMenuPanel(Color): JPanel
+          + isEchec960(): boolean
+          - createButtonGroup(JButton, JButton): JPanel
+          + isModeIA(): boolean
+          - setupPvPMenu(JButton): JPopupMenu
+          - createLoadButton(): JButton
+          - createDifficultyRadioButtons(Color): JRadioButton[]
+          + getChemin(): String
+          - setupIAMenu(JButton): JPopupMenu
+          - getSelectedDifficulty(JRadioButton[]): String
+          - createTitleLabel(): JLabel
+          - setupPopupMenu(JButton, JPopupMenu, boolean): void
+        }
+        class MenuSelectionConsole {
+          + MenuSelectionConsole():
+          - niveauDifficulte: String
+          - chemin: String
+          - scanner: Scanner
+          - modeIA: boolean
+          - echec960: boolean
+          - getFileExtension(File): String
+          - lireChoixUtilisateur(int, int): int
+          - configurerPartieJoueurVsIA(): void
+          - chargerPartie(): void
+          - configurerDifficulteIA(): void
+          - afficherMenu(): void
+          + isEchec960(): boolean
+          + getNiveauDifficulte(): String
+          + getChemin(): String
+          - configurerPartieJoueurVsJoueur(): void
+          + isModeIA(): boolean
+        }
+    }
+
+    together {
+        class VueControleur {
+          + VueControleur(Jeu):
+          - icoTourN: ImageIcon
+          - icoRoiN: ImageIcon
+          - icoFouN: ImageIcon
+          - icoCavalierB: ImageIcon
+          - icoDameN: ImageIcon
+          - icoRoiB: ImageIcon
+          - icoDameB: ImageIcon
+          - icoCavalierN: ImageIcon
+          - icoPionB: ImageIcon
+          - tabJLabel: JLabel[][]
+          - sizeX: int
+          - icoFouB: ImageIcon
+          - pxCase: int
+          - icoPionN: ImageIcon
+          - sizeY: int
+          - plateau: Plateau
+          - casesAccessibles: ArrayList<Case>
+          - jeu: Jeu
+          - icoTourB: ImageIcon
+          - caseClic2: Case
+          - caseClic1: Case
+          - demanderPromotion(): void
+          - placerLesComposantsGraphiques(): void
+          - afficherFinDePartie(String, String, String): void
+          - chargerIcone(String): ImageIcon?
+          - sauvegarderPartie(): void
+          - chargerLesIcones(): void
+          - mettreAJourAffichage(): void
+          + update(Observable, Object): void
+        }
+        class VueControleurConsole {
+          + VueControleurConsole(Jeu, boolean):
+          - pause: boolean
+          - sizeY: int
+          - jeu: Jeu
+          - gameOver: boolean
+          - plateau: Plateau
+          - sizeX: int
+          - casesAccessibles: ArrayList<Case>
+          - modeIA: boolean
+          - sauvegarderPartie(): void
+          + update(Observable, Object): void
+          - demanderCoup(): void
+          - obtenirCaseDepuisString(String): Case?
+          - getSymbolForPiece(Piece): String
+          - demanderPromotion(): void
+          - afficherEchiquier(): void
+          + jouer(): void
+        }
+        class SoundPlayer {
+          + SoundPlayer():
+          + {static} play(String): void
+        }
+    }
+}
+
+class Main {
+  - {static} mapDiffToDepth(String): int
+  + {static} main(String[]): void
+}
+
+
+Cavalier                   -[#595959,dashed]->  DecoratorCavalier         : "«create»"
+Cavalier                   -[#000082,plain]-^  Piece
+Dame                       -[#595959,dashed]->  DecoratorDiag             : "«create»"
+Dame                       -[#595959,dashed]->  DecoratorLigne            : "«create»"
+Dame                       -[#000082,plain]-^  Piece
+DecoratorCasesAccessibles "dCA" -[#595959,plain]- "piece" Piece
+DecoratorCasesAccessibles  -[#595959,plain]-> "plateau\n\n" Plateau
+DecoratorCavalier          -[#000082,plain]-^  DecoratorCasesAccessibles
+DecoratorDiag              -[#000082,plain]-^  DecoratorCasesAccessibles
+DecoratorLigne             -[#000082,plain]-^  DecoratorCasesAccessibles
+DecoratorPion              -[#000082,plain]-^  DecoratorCasesAccessibles
+DecoratorRoi               -[#000082,plain]-^  DecoratorCasesAccessibles
+Fou                        -[#595959,dashed]->  DecoratorDiag             : "«create»"
+Fou                        -[#000082,plain]-^  Piece
+Jeu                        -[#595959,plain]-> "tourActuel" Couleur
+Jeu                        *-[#595959,plain]-> "historiqueCoups\n*" Coup
+Jeu                        -[#595959,plain]-> "currentEvent" GameEvent
+Jeu                        -[#595959,plain]-> "joueurB\njoueurN" Joueur
+Jeu                        -[#595959,dashed]>  Plateau                   : "«create»"
+Jeu                       "jeu" -[#595959,plain]- "plateau" Plateau
+Joueur                     -[#595959,plain]-> "couleur" Couleur
+Joueur                     -[#595959,plain]-> "jeu" Jeu
+JoueurIA                   -[#000082,plain]^  Joueur
+Main                       -[#595959,dashed]->  Jeu                       : "«create»"
+Main                       -[#595959,dashed]->  MenuSelection             : "«create»"
+Main                       -[#595959,dashed]->  MenuSelectionConsole      : "«create»"
+Main                       -[#595959,dashed]->  VueControleur             : "«create»"
+Main                       -[#595959,dashed]->  VueControleurConsole      : "«create»"
+Piece                     "piece" -[#595959,plain]- "c" Case
+Piece                      -[#595959,plain]-> "couleur" Couleur
+Piece                      -[#595959,plain]-> "p" Plateau
+Pion                       -[#595959,dashed]->  DecoratorPion             : "«create»"
+Pion                       -[#000082,plain]-^  Piece
+Plateau                    -[#595959,dashed]->  Case                      : "«create»"
+Plateau                   *-[#595959,plain]-> "tab\n*" Case
+Plateau                    -[#595959,dashed]->  Cavalier                  : "«create»"
+Plateau                    -[#595959,dashed]->  Dame                      : "«create»"
+Plateau                    -[#595959,dashed]->  Fou                       : "«create»"
+Plateau                    -[#595959,dashed]->  Pion                      : "«create»"
+Plateau                    -[#595959,dashed]->  Roi                       : "«create»"
+Plateau                    -[#595959,dashed]->  Tour                      : "«create»"
+Roi                        -[#595959,dashed]->  DecoratorRoi              : "«create»"
+Roi                        -[#000082,plain]-^  Piece
+Tour                       -[#595959,dashed]->  DecoratorLigne            : "«create»"
+Tour                       -[#000082,plain]-^  Piece
+VueControleur             *-[#595959,plain]-> "casesAccessibles\n*" Case
+VueControleur              -[#595959,dashed]->  Coup
+VueControleur              -[#595959,plain]-> "jeu" Jeu
+VueControleurConsole      *-[#595959,plain]-> "casesAccessibles\n*" Case
+VueControleurConsole       -[#595959,dashed]->  Coup
+VueControleurConsole       -[#595959,plain]-> "jeu" Jeu
+VueControleur              .[#595959,dashed]> SoundPlayer
+
+JoueurIA -[hidden]-> DecoratorCasesAccessibles
+Plateau -[hidden]-> DecoratorCasesAccessibles
+@enduml
