@@ -1,13 +1,11 @@
 <img src="src/main/resources/assets/images/icone.png" alt="JavaChess" width="100" />
 
-***
 # JavaChess 
 
 JavaChess est un jeu d’échecs développé en Java avec une interface graphique Swing, basé sur une architecture MVC. Il propose les règles classiques des échecs ainsi que plusieurs extensions avancées.
 
 
 ## Installation et utilisation
-***
 
 ### Prérequis
 
@@ -36,7 +34,7 @@ java -jar target/JavaChess-1.1-SNAPSHOT.jar --mode=console
 
 
 ## Structure du projet
-***
+
 * [`doc`](./doc) : Contient la documentation du projet
 
     * [`ASSETS.md`](./doc/ASSETS.md) : Documentation des assets (images, sons)
@@ -59,7 +57,7 @@ java -jar target/JavaChess-1.1-SNAPSHOT.jar --mode=console
 
 
 ## Architecture
-***
+
 Le projet suit le modèle MVC :
 
 * **Modèle** (`modele`) : règles du jeu, gestion des pièces, déplacements, état du plateau
@@ -70,7 +68,7 @@ Les déplacements sont gérés via des décorateurs, permettant de moduler facil
 
 
 ## Extensions
-***
+
 * Intelligence artificielle avec niveaux de difficulté
 * Sauvegarde et chargement au format PGN ou FEN
 * Variante Échecs 960
@@ -79,6 +77,5 @@ Les déplacements sont gérés via des décorateurs, permettant de moduler facil
 
 
 ## Captures d’écran
-***
 
 ![Plateau version graphique](https://github.com/user-attachments/assets/7fde9450-d9e6-4654-9908-0447b0d56b53)
