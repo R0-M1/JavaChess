@@ -1,5 +1,6 @@
 <img src="src/main/resources/assets/images/icone.png" alt="JavaChess" width="100" />
 
+***
 # JavaChess 
 
 JavaChess est un jeu d’échecs développé en Java avec une interface graphique Swing, basé sur une architecture MVC. Il propose les règles classiques des échecs ainsi que plusieurs extensions avancées.
